@@ -1,2 +1,8 @@
 @import "tailwindcss";
 
+h1 {
+  font-family: var(--font-manrope), sans-serif;
+}
+input:focus {
+  outline: none;
+}
