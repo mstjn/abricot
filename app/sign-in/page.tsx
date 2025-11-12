@@ -5,17 +5,18 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useState } from "react";
 
+
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("John Doe");
   const [error, setError] = useState(false);
   const [errorMail, setErrorMail] = useState(false);
+ 
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log(JSON.stringify({ email, password }));
 
     const res = await fetch("http://localhost:8000/auth/register", {
       method: "POST",
@@ -26,7 +27,7 @@ const Page = () => {
     if (res.ok) {
       const data = await res.json();
       Cookies.set("token", data.data.token, { expires: 1 });
-      window.location.href = "/";
+      window.location.reload();
     } else {
       if (res.status === 409) {
         setErrorMail(true)

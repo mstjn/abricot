@@ -6,3 +6,12 @@ h1 {
 input:focus {
   outline: none;
 }
+body {
+  background-color:#F9FAFB;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+}

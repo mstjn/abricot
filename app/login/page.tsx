@@ -13,8 +13,6 @@ const Page = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(JSON.stringify({ email, password }));
-
     const res = await fetch("http://localhost:8000/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -24,7 +22,7 @@ const Page = () => {
     if (res.ok) {
       const data = await res.json();
       Cookies.set("token", data.data.token, { expires: 1 });
-      window.location.href = "/";
+      window.location.reload();
     } else {
       setError(true);
     }
