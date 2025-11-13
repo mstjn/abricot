@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
-import { cookies } from "next/headers";
 import { UserProvider } from "../app/userContext";
+import { getProfile } from "./api/api";
+import type { User } from "./types";
 
 // Chargement des polices Google
 const inter = Inter({
@@ -27,28 +28,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
 
-  let user = null;
-
-  if (token) {
-    try {
-      const res = await fetch("http://localhost:8000/auth/profile", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        cache: "no-store",
-      });
-
-      const data = await res.json();
-      user = data?.data?.user ?? null;
-    } catch (err) {
-      console.error("Erreur lors de la récupération du profil :", err);
-    }
-  }
-
+  const user : User | null = await getProfile()
+  
   return (
     <html lang="fr">
       <body className={`${inter.variable} ${manrope.variable} font-sans antialiased`}>

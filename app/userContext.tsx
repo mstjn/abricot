@@ -1,12 +1,9 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
+import type { User } from "./types";
 
-type User = {
-  id: string;
-  name: string;
-  email: string;
-};
+
 
 const UserContext = createContext<User | null>(null);
 

@@ -1,0 +1,71 @@
+import type { User, ProfileResponse, AssignedTasksResponse, Task, ProjectsResponse, Project } from "../types";
+import { cookies } from "next/headers";
+
+export const getProfile = async (): Promise<User | null> => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+
+  if (!token) return null;
+
+  try {
+    const res = await fetch("http://localhost:8000/auth/profile", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
+
+    const data: ProfileResponse = await res.json();
+    return data?.data?.user ?? null;
+  } catch (err) {
+    console.error("Erreur lors de la récupération du profil :", err);
+    return null;
+  }
+};
+
+export const getAssignedTasksByUser = async (token: string | undefined): Promise<Task[] | null> => {
+  if (!token) return null;
+
+  try {
+    const res = await fetch("http://localhost:8000/dashboard/assigned-tasks", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!res.ok) return null;
+
+    const data: AssignedTasksResponse = await res.json();
+
+    return data.data.tasks ?? null;
+  } catch (err) {
+    console.error("Erreur lors de la récupération des tâches assignées :", err);
+    return null;
+  }
+};
+
+export const getProjectsWithTasks = async (token: string | undefined): Promise<Project[] | null> => {
+  if (!token) return null;
+
+  try {
+    const res = await fetch("http://localhost:8000/dashboard/projects-with-tasks", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!res.ok) return null;
+
+    const data: ProjectsResponse = await res.json();
+
+    return data.data.projects ?? null;
+  } catch (err) {
+    console.error("Erreur lors de la récupération des projets :", err);
+    return null;
+  }
+};

@@ -9,9 +9,10 @@ import { useState } from "react";
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("John Doe");
+  const [name, setName] = useState("");
   const [error, setError] = useState(false);
   const [errorMail, setErrorMail] = useState(false);
+  const [errorName, setErrorName] = useState(false); 
  
 
 
@@ -45,6 +46,22 @@ const Page = () => {
         <div className="w-full flex flex-col items-center gap-10">
           <h1 className="text-[#D3590B] font-bold text-4xl">Inscription</h1>
           <form onSubmit={handleLogin} className="flex flex-col w-[50%] gap-5">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="name" className="text-sm">
+                Nom
+              </label>
+              <input
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setError(false);
+                  setErrorName(false)
+                }}
+                value={name}
+                type="text"
+                id="name"
+                className={`bg-white border ${error || errorName ? "border-red-500" : "border-[#E5E7EB]"}  h-12 px-2`}
+              />
+            </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="mail" className="text-sm">
                 Email
