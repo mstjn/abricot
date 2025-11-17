@@ -1,5 +1,6 @@
 "use client";
 import Footer from "../components/footer";
+import LogoutButton from "../components/LogoutButton";
 import Navbar from "../components/navbar";
 import { useUser } from "../userContext";
 
@@ -39,6 +40,7 @@ export default function Page() {
             <button type="submit" className="bg-[#1F1F1F] text-lg text-white py-3 w-[18%] rounded-xl hover:opacity-80 mt-3 pl-2">
               Modifier les informations
             </button>
+            <LogoutButton />
           </form>
         </article>
       </main>

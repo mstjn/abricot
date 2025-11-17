@@ -17,7 +17,7 @@ export default function HomePage() {
   const [search, setSearch] = useState<string>("");
 
   projects?.forEach((project) => {
-    project.tasks.forEach((task) => {
+    project.tasks?.forEach((task) => {
       tasksProjects.push({
         title: task.title,
         description: task.description,
@@ -38,8 +38,6 @@ export default function HomePage() {
   const tasksToDo = tasksProjects.filter((task) => task.status === "TODO");
   const tasksInProgress = tasksProjects.filter((task) => task.status === "IN_PROGRESS");
   const tasksDone = tasksProjects.filter((task) => task.status === "DONE");
-
-
 
   if (loading) return <p>Chargement</p>;
 
@@ -73,14 +71,14 @@ export default function HomePage() {
         </section>
 
         {view ? (
-          <section className="bg-white border border-[#E5E7EB] px-16 py-10 rounded-lg">
+          <section className="bg-white border border-[#E5E7EB] px-16 py-10 rounded-xl">
             <div className="flex justify-between mb-10">
               <div className="flex flex-col gap-2">
                 <h3 className="font-semibold text-xl">Mes tâches assignées</h3>
                 <p className="text-[#6B7280] text-lg">Par ordre de priorité</p>
               </div>
 
-              <div className="border border-[#E5E7EB] flex gap-2 px-5 rounded-lg w-[23%] justify-between">
+              <div className="border border-[#E5E7EB] flex gap-2 px-5 rounded-xl w-[23%] justify-between">
                 <input type="text" className="w-full" placeholder="Rechercher une tâche" value={search} onChange={(e) => setSearch(e.target.value)} />
                 <Image src="/search.svg" height={15} width={15} alt="search" />
               </div>
@@ -97,16 +95,16 @@ export default function HomePage() {
             <div className="flex flex-col  border border-[#FFE0E0] rounded-xl bg-white w-[32%] px-6 py-10 gap-5">
               <div className="flex gap-2 items-center mb-4">
                 <h3 className="font-semibold text-xl">À faire</h3>
-                <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">4</span>
+                <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">{tasksToDo.length}</span>
               </div>
-               {tasksToDo.map((tp: TaskProjectItem, index: number) => (
+              {tasksToDo.map((tp: TaskProjectItem, index: number) => (
                 <TaskKanban key={index} props={tp} />
               ))}
             </div>
             <div className="flex flex-col border border-[#FFE0E0] rounded-xl bg-white w-[32%] px-6 py-10 gap-5">
               <div className="flex gap-2 items-center mb-4">
                 <h3 className="font-semibold text-xl">En cours</h3>
-                <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">4</span>
+                <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">{tasksInProgress.length}</span>
               </div>
               {tasksInProgress.map((tp: TaskProjectItem, index: number) => (
                 <TaskKanban key={index} props={tp} />
@@ -115,7 +113,7 @@ export default function HomePage() {
             <div className="flex flex-col border border-[#FFE0E0] rounded-xl bg-white w-[32%] px-6 py-10 gap-5">
               <div className="flex gap-2 items-center mb-4">
                 <h3 className="font-semibold text-xl">Terminées</h3>
-                <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">4</span>
+                <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">{tasksDone.length}</span>
               </div>
               {tasksDone.map((tp: TaskProjectItem, index: number) => (
                 <TaskKanban key={index} props={tp} />

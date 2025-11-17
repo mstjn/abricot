@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react";
 import type { Project } from "../types";
 
-export function useProjectsWithTasks() {
+export function useProjects() {
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function refresh() {
     try {
-      const res = await fetch("/api/projectsTasks", {
+      const res = await fetch("/api/projects", {
         method: "GET",
         cache: "no-store",
-      });
+      });      
 
       if (!res.ok) {
         setProjects(null);
         return;
       }
-
+      
       const data: Project[] = await res.json();
+
+     
+      
 
       setProjects(data);
     } catch (err) {
-      console.error("Erreur fetch projects with tasks:", err);
+      console.error("Erreur fetch projects:", err);
       setProjects(null);
     }
   }

@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import LogoutButton from "./LogoutButton";
 import { useUser } from "../userContext";
 
 interface NavbarProps {
@@ -79,7 +78,6 @@ export default function Navbar({ dashboard, profile, project }: NavbarProps) {
           <p className="text-lg transition-all duration-300 ease-in-out">Projets</p>
         </Link>
       </nav>
-  <LogoutButton />
       <Link
         href="/profile"
         className={`${

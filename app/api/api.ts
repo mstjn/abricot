@@ -1,5 +1,7 @@
 import type { User, ProfileResponse, AssignedTasksResponse, Task, ProjectsResponse, Project } from "../types";
 import { cookies } from "next/headers";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 
 export const getProfile = async (): Promise<User | null> => {
   const cookieStore = await cookies();
@@ -63,6 +65,32 @@ export const getProjectsWithTasks = async (token: string | undefined): Promise<P
 
     const data: ProjectsResponse = await res.json();
 
+    return data.data.projects ?? null;
+  } catch (err) {
+    console.error("Erreur lors de la récupération des projets :", err);
+    return null;
+  }
+};
+
+export const getProjects = async (token: string | undefined): Promise<Project[] | null> => {
+  if (!token) return null;
+
+  try {
+    const res = await fetch("http://localhost:8000/projects", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
+
+    
+
+    if (!res.ok) return null;
+
+    const data: ProjectsResponse = await res.json();
+    
+  
     return data.data.projects ?? null;
   } catch (err) {
     console.error("Erreur lors de la récupération des projets :", err);

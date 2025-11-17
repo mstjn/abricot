@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   const pathname = request.nextUrl.pathname;
 
@@ -18,7 +18,23 @@ export function proxy(request: NextRequest) {
   if (!publicPaths.includes(pathname) && !token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
-  
+
+  try {
+    const res = await fetch("http://localhost:8000/auth/profile", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) {
+      const resp = NextResponse.redirect(new URL("/login", request.url));
+      resp.cookies.delete("token");
+      return resp;
+    }
+  } catch (e) {
+    const resp = NextResponse.redirect(new URL("/login", request.url));
+    resp.cookies.delete("token");
+    return resp;
+  }
+
   return NextResponse.next();
 }
 

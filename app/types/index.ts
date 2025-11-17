@@ -33,12 +33,17 @@ export interface Project {
   ownerId: string;
   owner: User;
   members: ProjectMember[];
-  tasks: Task[];
+  tasks?: Task[];
+  _count? : Count
   createdAt: string;
   updatedAt: string;
 }
 
-export type ProjectRole = "OWNER" | "ADMIN" | "MEMBER";
+interface Count {
+  tasks : number
+}
+
+export type ProjectRole = "CONTRIBUTOR" | "ADMIN"
 
 export interface ProjectMember {
   id: string;

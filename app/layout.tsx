@@ -5,6 +5,7 @@ import { UserProvider } from "../app/userContext";
 import { getProfile } from "./api/api";
 import type { User } from "./types";
 
+
 // Chargement des polices Google
 const inter = Inter({
   variable: "--font-inter",
@@ -29,8 +30,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const user : User | null = await getProfile()
   
+
+  const user : User | null = await getProfile()
+
+
   return (
     <html lang="fr">
       <body className={`${inter.variable} ${manrope.variable} font-sans antialiased`}>
