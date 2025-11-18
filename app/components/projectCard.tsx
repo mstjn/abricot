@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Project } from "../types";
-import { getProjectsTasks } from "../api/api";
 import { useProjectsTasks } from "../hooks/useProjectsTasks";
+import Link from "next/link";
 
 interface projectProps {
   props: Project;
@@ -30,7 +30,8 @@ export default function ProjectCard({ props }: projectProps) {
   const progress: number = (nbTasksDone * 100) / nbTasks;
 
   return (
-    <article className="px-10 py-8 border border-[#E5E7EB] bg-white rounded-xl flex flex-col gap-10 sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)]">
+  
+    <Link href={`/projects/${props.id}`} className="px-10 py-8 border border-[#E5E7EB] bg-white rounded-xl flex flex-col gap-10 sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)]">
       <div className="flex flex-col gap-2">
         <h4 className="font-semibold text-lg">{props.name}</h4>
         <p className="text-sm text-[#6B7280]">{props.description}</p>
@@ -63,6 +64,7 @@ export default function ProjectCard({ props }: projectProps) {
           ))}
         </div>
       </div>
-    </article>
+    </Link>
+    
   );
 }
