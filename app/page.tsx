@@ -39,7 +39,7 @@ export default function HomePage() {
   const tasksInProgress = tasksProjects.filter((task) => task.status === "IN_PROGRESS");
   const tasksDone = tasksProjects.filter((task) => task.status === "DONE");
 
-  if (loading) return <p>Chargement</p>;
+  
 
   return (
     <>

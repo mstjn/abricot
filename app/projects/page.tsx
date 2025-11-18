@@ -6,7 +6,6 @@ import { useProjects } from "../hooks/useProjects";
 import { Project } from "../types";
 export default function Page() {
   const { projects } = useProjects();
-  console.log(projects);
 
   return (
     <>

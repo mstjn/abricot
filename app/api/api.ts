@@ -84,14 +84,37 @@ export const getProjects = async (token: string | undefined): Promise<Project[] 
       cache: "no-store",
     });
 
-    
-
     if (!res.ok) return null;
 
     const data: ProjectsResponse = await res.json();
     
   
     return data.data.projects ?? null;
+  } catch (err) {
+    console.error("Erreur lors de la récupération des projets :", err);
+    return null;
+  }
+};
+
+export const getProjectsTasks = async (token : string | undefined, projectID : string): Promise<Task[] | null> => {
+
+  if (!token) return null;
+
+  try {
+    const res = await fetch(`http://localhost:8000/projects/${projectID}/tasks`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!res.ok) return null;
+
+    const data: AssignedTasksResponse = await res.json();
+    
+  
+    return data.data.tasks ?? null;
   } catch (err) {
     console.error("Erreur lors de la récupération des projets :", err);
     return null;

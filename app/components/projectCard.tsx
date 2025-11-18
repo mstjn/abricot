@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Project } from "../types";
+import { getProjectsTasks } from "../api/api";
+import { useProjectsTasks } from "../hooks/useProjectsTasks";
 
 interface projectProps {
   props: Project;
@@ -18,6 +20,15 @@ export default function ProjectCard({ props }: projectProps) {
 
   const ownerInitials = getInitials(props.owner?.name);
 
+  const { tasks } = useProjectsTasks(props.id);
+
+  const doneTasks = tasks?.filter((task) => task.status === "DONE");
+
+  const nbTasksDone: number = doneTasks?.length || 0;
+  const nbTasks: number = props._count?.tasks || 0;
+
+  const progress: number = (nbTasksDone * 100) / nbTasks;
+
   return (
     <article className="px-10 py-8 border border-[#E5E7EB] bg-white rounded-xl flex flex-col gap-10 sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)]">
       <div className="flex flex-col gap-2">
@@ -28,11 +39,13 @@ export default function ProjectCard({ props }: projectProps) {
       <div>
         <div className="flex justify-between mb-2">
           <p className="text-[#6B7280]">Progression</p>
-          <p>0%</p>
+          <p>{progress.toFixed(0)}%</p>
         </div>
 
-        <progress className="my-progress" value={0} max={1} />
-        <p className="text-[#6B7280] text-xs">0/{props._count?.tasks} tâches terminées</p>
+        <progress className="my-progress" value={progress.toFixed(0)} max={100} />
+        <p className="text-[#6B7280] text-xs">
+          {nbTasksDone}/{nbTasks} tâches terminées
+        </p>
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex gap-2">
