@@ -23,10 +23,15 @@ export default function TaskList({ props }: PropsTL) {
       break;
 
     case "TODO":
-    default:
       statusLabel = "À faire";
       statusColor = "bg-[#FFE0E0] text-[#EF4444]"; 
       break;
+
+      case "CANCELLED":
+        default: 
+        statusLabel = "Annuléé";
+        statusColor = "bg-red-300 text-red-500"
+        break; 
   }
 
   const dueDateFormatted = props.dueDate

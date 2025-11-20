@@ -4,13 +4,12 @@ import Footer from "../components/footer";
 import LogoutButton from "../components/LogoutButton";
 import Navbar from "../components/navbar";
 import { useUser } from "../userContext";
+import { toast } from "sonner"
 
 export default function Page() {
   const user = useUser();
-
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
   let firstName = "";
   let lastName = "";
 
@@ -19,11 +18,15 @@ export default function Page() {
   }
 
 
-  function validatePassword(pw : string) {
-    const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-    return regex.test(pw);
-  }
+function validatePassword(pw: string) {
+  if (!pw || pw.trim() === "") return false;
+
+  const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+  return regex.test(pw);
+}
+
   
+  // before each submission, check if the data provided is valid.
  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault(); 
 
@@ -31,10 +34,21 @@ export default function Page() {
   const formData = new FormData(form);
 
   const newPassword = formData.get("password") as string;
-  if (newPassword && !validatePassword(newPassword)) {
+const oldPassword = formData.get("oldPassword") as string;
+
+
+if (oldPassword.trim() !== "") {
+  if (!newPassword || newPassword.trim() === "") {
+    setPasswordError("Le nouveau mot de passe ne peut pas être vide.");
+    return;
+  }
+
+  if (!validatePassword(newPassword)) {
     setPasswordError("Le mot de passe doit contenir au minimum 8 caractères, une majuscule et un chiffre.");
     return;
   }
+}
+
 
   const res = await fetch("/api/edit", {
     method: "POST",
@@ -45,15 +59,18 @@ export default function Page() {
 
   if (!res.ok) {
     if (data.type === "password") {
-      alert(data.message);
+      toast.error(data.message);
       return;
     }
 
-    alert("Erreur lors de la mise à jour : " + data.message);
+    toast.error("Erreur lors de la mise à jour : " + data.message);
     return;
+  }else {
+    toast.success("Les données ont bien étés modifiées")
   }
-
-  window.location.href = "/profile";
+ setTimeout(() => {
+  window.location.href = "/profile"
+}, 1000);
 };
 
 
@@ -64,7 +81,6 @@ export default function Page() {
         <article className="bg-white border border-[#E5E7EB] px-16 py-8 rounded-xl">
           <h1 className="font-semibold text-xl">Mon compte</h1>
           <h2 className="text-lg text-[#6B7280]">{firstName + " " + lastName}</h2>
-
           <form
             className="flex flex-col gap-4 mt-10"
             action="/api/edit"
@@ -109,6 +125,7 @@ export default function Page() {
               <input
                 id="oldPassword"
                 type="password"
+                autoComplete="off"
                 name="oldPassword"
                 className="border border-[#E5E7EB] h-13 rounded pl-2 text-[#6B7280]"
               />
@@ -119,6 +136,7 @@ export default function Page() {
                 id="password"
                 type="password"
                 name="password"
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);

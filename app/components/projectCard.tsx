@@ -17,16 +17,11 @@ export default function ProjectCard({ props }: projectProps) {
       : "?";
 
   const memberInitials = props.members.map((m) => getInitials(m.user?.name));
-
   const ownerInitials = getInitials(props.owner?.name);
-
   const { tasks } = useProjectsTasks(props.id);
-
   const doneTasks = tasks?.filter((task) => task.status === "DONE");
-
   const nbTasksDone: number = doneTasks?.length || 0;
   const nbTasks: number = props._count?.tasks || 0;
-
   const progress: number = (nbTasksDone * 100) / nbTasks;
 
   return (

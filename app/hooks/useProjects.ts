@@ -19,9 +19,6 @@ export function useProjects() {
       
       const data: Project[] = await res.json();
 
-     
-      
-
       setProjects(data);
     } catch (err) {
       console.error("Erreur fetch projects:", err);

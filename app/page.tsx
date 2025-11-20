@@ -10,7 +10,7 @@ import TaskList from "./components/taskList";
 import type { TaskProjectItem } from "./types";
 
 export default function HomePage() {
-  const { projects, loading } = useProjectsWithTasks();
+  const { projects } = useProjectsWithTasks();
   const user = useUser();
   const [view, setView] = useState<boolean>(true);
   const tasksProjects: TaskProjectItem[] = [];

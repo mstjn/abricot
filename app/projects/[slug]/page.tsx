@@ -20,6 +20,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
 
  
+  // input filter
 const filteredTasks = tasks?.filter((task) => {
   const q = search.toLowerCase();
 
@@ -46,7 +47,6 @@ const filteredTasks = tasks?.filter((task) => {
   const projet: Project[] | undefined = projects?.filter((p) => p.id === slug);
   const memberInitials = projet?.[0].members.map((m) => getInitials(m.user?.name));
   const members = projet?.[0].members.map((m) => m.user?.name);
-
   const ownerInitials = getInitials(projet?.[0].owner?.name);
 
 
@@ -63,6 +63,10 @@ const filteredTasks = tasks?.filter((task) => {
     value: "DONE",
     label: "Terminée",
   },
+  {
+    value: "CANCELLED",
+    label: "Annulée"
+  }
 ]
 
   return (

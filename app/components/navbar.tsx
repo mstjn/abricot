@@ -10,14 +10,14 @@ interface NavbarProps {
 }
 
 export default function Navbar({ dashboard, profile, project }: NavbarProps) {
+
+  // get initials
   const user = useUser();
   let firstName = "";
   let lastName = "";
-
   if (user?.name) {
     [firstName, lastName] = user?.name.split(" ");
   }
-
   const A = firstName[0];
   const B = lastName[0];
 

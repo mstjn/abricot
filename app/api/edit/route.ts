@@ -9,7 +9,6 @@ export async function POST(request: NextRequest) {
   const newPassword = formData.get("password") as string;
   const oldPassword = formData.get("oldPassword") as string;
   const fullName = `${prenom} ${nom}`;
-
   const cookie = await cookies()
   const token = cookie.get("token")?.value;
 
@@ -17,6 +16,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Token manquant" }, { status: 401 });
   }
 
+
+  // profile update (name & email)
   const profileRes = await fetch("http://localhost:8000/auth/profile", {
     method: "PUT",
     headers: {
@@ -41,6 +42,8 @@ export async function POST(request: NextRequest) {
 
   let passwordJson = null;
 
+
+  // password update 
   if (newPassword && newPassword.trim() !== "") {
     const passwordRes = await fetch("http://localhost:8000/auth/password", {
       method: "PUT",

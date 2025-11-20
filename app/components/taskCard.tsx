@@ -13,7 +13,6 @@ export default function TaskCard({ task, getInitials }: taskProps) {
   const [openComments, setOpenComments] = useState(false);
   const currentUser = useUser();
 
-
   let statusLabel = "";
   let statusColor = "";
 
@@ -95,42 +94,36 @@ export default function TaskCard({ task, getInitials }: taskProps) {
         <div className="flex flex-col gap-4 ">
           {task.comments.length === 0 && <p className="text-sm text-[#6B7280]">Aucun commentaire</p>}
 
-         {task.comments.map((comment, index) => {
-  const isCurrentUser = comment.author.id === currentUser?.id;
+          {task.comments.map((comment, index) => {
+            const isCurrentUser = comment.author.id === currentUser?.id;
 
-  return (
-    <div key={index} className="flex gap-5 items-start">
-      {/* Avatar with color condition */}
-      <div className="flex items-center gap-2">
-        <span
-          className={`p-2 rounded-full text-xs ${
-            isCurrentUser ? "bg-[#FFE8D9]" : "bg-[#E5E7EB]"
-          }`}
-        >
-          {getInitials(comment.author.name)}
-        </span>
-      </div>
+            return (
+              <div key={index} className="flex gap-5 items-start">
+                {/* Avatar with color condition */}
+                <div className="flex items-center gap-2">
+                  <span className={`p-2 rounded-full text-xs ${isCurrentUser ? "bg-[#FFE8D9]" : "bg-[#E5E7EB]"}`}>
+                    {getInitials(comment.author.name)}
+                  </span>
+                </div>
 
-      <div className="flex bg-[#F3F4F6] rounded-xl w-full p-5 justify-between">
-        <div className="flex flex-col gap-3">
-          <p className="font-semibold">{comment.author.name}</p>
-          <p className="text-sm">{comment.content}</p>
-        </div>
+                <div className="flex bg-[#F3F4F6] rounded-xl w-full p-5 justify-between">
+                  <div className="flex flex-col gap-3">
+                    <p className="font-semibold">{comment.author.name}</p>
+                    <p className="text-sm">{comment.content}</p>
+                  </div>
 
-        <p className="text-xs text-[#6B7280]">
-          {new Date(comment.createdAt).toLocaleString("fr-FR", {
-            day: "numeric",
-            month: "long",
-            hour: "2-digit",
-            minute: "2-digit",
+                  <p className="text-xs text-[#6B7280]">
+                    {new Date(comment.createdAt).toLocaleString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
+              </div>
+            );
           })}
-        </p>
-      </div>
-    </div>
-  );
-})}
-
-                
         </div>
       </div>
     </article>

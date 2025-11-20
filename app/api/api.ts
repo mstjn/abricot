@@ -1,8 +1,8 @@
 import type { User, ProfileResponse, AssignedTasksResponse, Task, ProjectsResponse, Project } from "../types";
 import { cookies } from "next/headers";
-import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
 
+
+// retrieve profile data
 export const getProfile = async (): Promise<User | null> => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
@@ -26,6 +26,7 @@ export const getProfile = async (): Promise<User | null> => {
   }
 };
 
+// retrieve assigned tasks to user
 export const getAssignedTasksByUser = async (token: string | undefined): Promise<Task[] | null> => {
   if (!token) return null;
 
@@ -49,6 +50,8 @@ export const getAssignedTasksByUser = async (token: string | undefined): Promise
   }
 };
 
+
+// retrieve the projects to which the user has assigned tasks
 export const getProjectsWithTasks = async (token: string | undefined): Promise<Project[] | null> => {
   if (!token) return null;
 
@@ -72,6 +75,8 @@ export const getProjectsWithTasks = async (token: string | undefined): Promise<P
   }
 };
 
+
+// retrieve all of the user's projects
 export const getProjects = async (token: string | undefined): Promise<Project[] | null> => {
   if (!token) return null;
 
@@ -96,6 +101,8 @@ export const getProjects = async (token: string | undefined): Promise<Project[] 
   }
 };
 
+
+// retrieve all of the project's taks
 export const getProjectsTasks = async (token : string | undefined, projectID : string): Promise<Task[] | null> => {
 
   if (!token) return null;

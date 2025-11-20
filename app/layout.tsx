@@ -4,6 +4,7 @@ import "./globals.css";
 import { UserProvider } from "../app/userContext";
 import { getProfile } from "./api/api";
 import type { User } from "./types";
+import { Toaster } from "@/components/ui/sonner"
 
 
 // Chargement des polices Google
@@ -39,6 +40,9 @@ export default async function RootLayout({
     <html lang="fr">
       <body className={`${inter.variable} ${manrope.variable} font-sans antialiased`}>
         <UserProvider initialUser={user}>{children}</UserProvider>
+         <Toaster  position="top-right"
+          theme="dark"
+           richColors/>
       </body>
     </html>
   );

@@ -2,9 +2,7 @@
 
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
-
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -32,8 +30,9 @@ export function ComboboxDemo({ statuts, setSelectedStatus }: {
       <PopoverTrigger asChild>
   <div
     className="border border-[#E5E7EB] flex items-center gap-2 px-8 rounded-xl h-16 cursor-pointer bg-white"
-    role="combobox"
     aria-expanded={open}
+    aria-controls=""
+    role="combobox"
     onClick={() => setOpen(!open)}
   >
     <span className="w-full text-left text-[#6B7280]">
