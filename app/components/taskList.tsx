@@ -74,7 +74,7 @@ export default function TaskList({ props }: PropsTL) {
 
         </div>
 
-        <Link href={`/projects/${props.projectID}`} className="text-white bg-[#1F1F1F] rounded-xl py-3 px-12">
+        <Link href={`/projects/${props.projectID}`} className="text-white bg-[#1F1F1F] rounded-xl py-3 px-12 flex items-center">
           Voir
         </Link>
 

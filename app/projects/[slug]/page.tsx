@@ -8,7 +8,7 @@ import { use, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import TaskCard from "@/app/components/taskCard";
-import { ComboboxDemo } from "@/app/components/ComboboxDemo";
+import { ComboboxDemo } from "@/app/components/comboboxDemo";
 
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -18,8 +18,6 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   const [view, setView] = useState(true);
   const [search, setSearch] = useState("")
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-
-console.log(selectedStatus);
 
  
 const filteredTasks = tasks?.filter((task) => {
@@ -95,7 +93,7 @@ const filteredTasks = tasks?.filter((task) => {
         </section>
         <section className="bg-[#F3F4F6] flex justify-between rounded-xl px-12 py-5">
           <div className="flex gap-5 items-baseline">
-            <h2 className="text-xl font-semibold">Contributeur</h2>
+            <h2 className="text-xl font-semibold">Contributeurs</h2>
             <p className="text-[#6B7280]">{1 + (memberInitials?.length || 0)} personnes</p>
           </div>
           <div className="flex items-center">
