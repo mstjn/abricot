@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { TaskProjectItem } from "../types";
+import Link from "next/link";
 
 interface PropsTK {
   props: TaskProjectItem;
@@ -66,7 +67,7 @@ export default function TaskKanban({ props }: PropsTK) {
           </span>
         </div>
       </div>
-      <button className="text-white bg-[#1F1F1F] rounded-xl py-3 flex justify-center w-[30%]">Voir</button>
+      <Link href={`/projects/${props.projectID}`} className="text-white bg-[#1F1F1F] rounded-xl py-3 flex justify-center w-[30%]">Voir</Link>
     </article>
   );
 }

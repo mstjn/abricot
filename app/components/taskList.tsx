@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { TaskProjectItem } from "../types";
+import Link from "next/link";
 
 interface PropsTL {
   props: TaskProjectItem;
@@ -73,9 +74,9 @@ export default function TaskList({ props }: PropsTL) {
 
         </div>
 
-        <button className="text-white bg-[#1F1F1F] rounded-xl py-3 px-12">
+        <Link href={`/projects/${props.projectID}`} className="text-white bg-[#1F1F1F] rounded-xl py-3 px-12">
           Voir
-        </button>
+        </Link>
 
       </div>
     </article>

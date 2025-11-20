@@ -7,12 +7,34 @@ import { Project } from "@/app/types";
 import { use, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import TaskCard from "@/app/components/taskCard";
+import { ComboboxDemo } from "@/app/components/ComboboxDemo";
+
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const { tasks } = useProjectsTasks(slug);
   const { projects } = useProjects();
   const [view, setView] = useState(true);
+  const [search, setSearch] = useState("")
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+
+console.log(selectedStatus);
+
+ 
+const filteredTasks = tasks?.filter((task) => {
+  const q = search.toLowerCase();
+
+  const matchSearch =
+    task.title.toLowerCase().includes(q) ||
+    task.description.toLowerCase().includes(q);
+
+  const matchStatus =
+    !selectedStatus || task.status === selectedStatus;
+
+  return matchSearch && matchStatus;
+});
+
 
   const getInitials = (name?: string) =>
     name
@@ -28,6 +50,22 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   const members = projet?.[0].members.map((m) => m.user?.name);
 
   const ownerInitials = getInitials(projet?.[0].owner?.name);
+
+
+  const statuts = [
+  {
+    value: "TODO",
+    label: "À faire",
+  },
+  {
+    value: "IN_PROGRESS",
+    label: "En cours",
+  },
+  {
+    value: "DONE",
+    label: "Terminée",
+  },
+]
 
   return (
     <>
@@ -95,19 +133,22 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
                 </a>
               </div>
 
-              <div className="border border-[#E5E7EB] flex gap-10 px-8 rounded-xl h-16 justify-between items-center">
-                <p className="text-[#6B7280]">Statut</p>
-                <Image src="/menu-close.svg" height={15} width={15} alt="search" />
-              </div>
+             <ComboboxDemo statuts={statuts} setSelectedStatus={setSelectedStatus} />
+
 
               <div className="border border-[#E5E7EB] flex gap-2 px-8 rounded-xl h-16  justify-between">
-                <input type="text" className="w-full" placeholder="Rechercher une tâche" />
+                <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" className="w-full" placeholder="Rechercher une tâche" />
                 <Image src="/search.svg" height={15} width={15} alt="search" />
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-5"></div>
+
+          <div className="flex flex-col gap-5 px-10">
+
+            {filteredTasks?.map((task, index) => <TaskCard getInitials={getInitials} task={task} key={index} />)}
+            
+          </div>
         </section>
       </main>
       <Footer />

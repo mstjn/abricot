@@ -96,4 +96,5 @@ export interface TaskProjectItem {
   dueDate: string | Date;
   commentsCount: number;
   projectName: string;
+  projectID : string
 }

@@ -26,6 +26,7 @@ export default function HomePage() {
         dueDate: task.dueDate,
         commentsCount: task.comments.length,
         projectName: project.name,
+        projectID: project.id
       });
     });
   });
