@@ -8,13 +8,16 @@ import { useState } from "react";
 import TaskKanban from "./components/taskKanban";
 import TaskList from "./components/taskList";
 import type { TaskProjectItem } from "./types";
+import { createPortal } from "react-dom";
+import ModalCreateProject from "./components/modalCreateProject";
 
 export default function HomePage() {
-  const { projects } = useProjectsWithTasks();
+  const { projects, refresh } = useProjectsWithTasks();
   const user = useUser();
   const [view, setView] = useState<boolean>(true);
   const tasksProjects: TaskProjectItem[] = [];
   const [search, setSearch] = useState<string>("");
+  const [showModal, setShowModal] = useState(false)
 
   projects?.forEach((project) => {
     project.tasks?.forEach((task) => {
@@ -51,7 +54,11 @@ export default function HomePage() {
             <h1 className="font-semibold text-2xl">Tableau de bord</h1>
             <h2 className="text-lg">Bonjour {user?.name}, voici un aperçu de vos projets et tâches</h2>
           </div>
-          <button className="text-white text-lg bg-[#1F1F1F] rounded-xl h-14 px-6">+ Créer un projet</button>
+          <button className="text-white text-lg bg-[#1F1F1F] rounded-xl h-14 px-6" onClick={() => setShowModal(true)}>+ Créer un projet</button>
+          {showModal && createPortal(<ModalCreateProject closeModal={() => setShowModal(false)}  onSuccess={() => {
+                  refresh();            
+                  setShowModal(false);  
+                }}/>, document.body)}
         </section>
 
         <section className="flex gap-5 mt-5">

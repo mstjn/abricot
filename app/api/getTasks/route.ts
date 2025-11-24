@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     // Récupération de l'id dans l'URL
     const { searchParams } = new URL(req.url);
     const projectId = searchParams.get("id") ?? "";
-
+ 
     const data = await getProjectsTasks(token, projectId);
     return NextResponse.json(data ?? []);
   } catch (err) {

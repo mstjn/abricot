@@ -22,7 +22,7 @@ export default function ProjectCard({ props }: projectProps) {
   const doneTasks = tasks?.filter((task) => task.status === "DONE");
   const nbTasksDone: number = doneTasks?.length || 0;
   const nbTasks: number = props._count?.tasks || 0;
-  const progress: number = (nbTasksDone * 100) / nbTasks;
+  const progress: number = (nbTasksDone * 100) / nbTasks || 0;
 
   return (
   

@@ -9,6 +9,8 @@ import Link from "next/link";
 import Image from "next/image";
 import TaskCard from "@/app/components/taskCard";
 import { ComboboxDemo } from "@/app/components/comboboxDemo";
+import { createPortal } from "react-dom";
+import ModalUpdateProject from "@/app/components/modalUpdateProject";
 
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -18,6 +20,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   const [view, setView] = useState(true);
   const [search, setSearch] = useState("")
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false)
 
  
   // input filter
@@ -81,7 +84,8 @@ const filteredTasks = tasks?.filter((task) => {
             <div className="flex flex-col gap-2">
               <div className="flex gap-5 items-center">
                 <h1 className="font-semibold text-2xl">{projet?.[0].name}</h1>
-                <u className="text-[#D3590B]">Modifier</u>
+                <u className="text-[#D3590B] cursor-pointer" onClick={() => setShowModal(true)}>Modifier</u>
+                {showModal && createPortal(<ModalUpdateProject closeModal={() => setShowModal(false)}/>, document.body)}
               </div>
               <h2 className="text-lg">{projet?.[0].description}</h2>
             </div>
