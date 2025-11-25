@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { toast } from "sonner";
 import { useState } from "react";
+import { User } from "../types";
 import AutocompleteUsers from "./AutocompleteUsers";
-import { User } from "../types"; // le composant qu’on crée juste après
 
 export default function ModalCreateProject({
   closeModal,
@@ -15,13 +15,25 @@ export default function ModalCreateProject({
 }) {
   const [contributors, setContributors] = useState<User[]>([]);
 
+  const addContributor = (user: User) => {
+    if (!contributors.some((c) => c.id === user.id)) {
+      setContributors((prev) => [...prev, user]);
+    }
+  };
+
+  const removeContributor = (id: string) => {
+    setContributors((prev) => prev.filter((u) => u.id !== id));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    // 👉 Ajouter les contributeurs sélectionnés
-    formData.append("contributors", JSON.stringify(contributors.map((u) => u.id)));
+    formData.append(
+      "contributors",
+      JSON.stringify(contributors.map((u) => u.email))
+    );
 
     const res = await fetch("/api/createProject", {
       method: "POST",
@@ -35,6 +47,7 @@ export default function ModalCreateProject({
       toast.error("Erreur dans la création du projet");
     }
   };
+  
 
   return (
     <aside
@@ -68,47 +81,36 @@ export default function ModalCreateProject({
             />
           </div>
 
-          {/* Champ d’autocomplétion */}
           <div className="flex flex-col gap-1">
             <label>Contributeurs</label>
-            <AutocompleteUsers
-              onSelect={(user : User) => {
-                // éviter les doublons
-                if (!contributors.find((u) => u.id === user.id)) {
-                  setContributors([...contributors, user]);
-                }
-              }}
-            />
-
-            {/* Affichage des utilisateurs sélectionnés */}
-            <div className="flex flex-wrap gap-2 mt-2">
-              {contributors.map((user) => (
-                <div
-                  key={user.id}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-xs flex items-center gap-2"
-                >
-                  {user.name}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setContributors(contributors.filter((u) => u.id !== user.id))
-                    }
+            <AutocompleteUsers onSelect={addContributor} />
+            {contributors.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {contributors.map((user) => (
+                  <div
+                    key={user.id}
+                    className="bg-gray-100 px-3 py-1 rounded-full flex items-center gap-2 text-xs"
                   >
-                    <Image src="/close.svg" height={10} width={10} alt="remove" />
-                  </button>
-                </div>
-              ))}
-            </div>
+                    {user.name}
+                    <button
+                      type="button"
+                      onClick={() => removeContributor(user.id)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-
           <button
-            className="text-white text-md w-[50%] bg-[#1F1F1F] rounded-lg p-3"
+            className="text-white text-md w-[50%] bg-[#1F1F1F] rounded-lg p-3 mt-3"
             type="submit"
           >
             Ajouter un projet
           </button>
         </form>
-
         <button className="absolute top-5 right-5" onClick={closeModal}>
           <Image src="/close.svg" height={15} width={15} alt="close" />
         </button>

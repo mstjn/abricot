@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
     if (!token) {
       return NextResponse.json([], { status: 401 });
     }
-console.log(query);
 
     // Requête à ton backend
     const res = await fetch(

@@ -12,6 +12,11 @@ export async function POST(request: NextRequest) {
 
   const name = formData.get('name')
   const description = formData.get('description')
+  const contributorsRaw = formData.get("contributors");
+  
+  const contributors = contributorsRaw
+  ? JSON.parse(contributorsRaw as string)
+  : [];
 
   
   const creationRes = await fetch("http://localhost:8000/projects", {
@@ -23,7 +28,7 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify({
       name,
       description,
-      contributors : []
+      contributors,
     }),
   });
 
@@ -31,7 +36,7 @@ export async function POST(request: NextRequest) {
 
    if (!creationRes.ok) {
     return NextResponse.json(
-      { error: "Erreur Mise à jour Profil", details: creationJson },
+      { error: "Erreur création de projet", details: creationJson },
       { status: creationRes.status }
     );
   }

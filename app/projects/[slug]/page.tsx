@@ -16,7 +16,7 @@ import ModalUpdateProject from "@/app/components/modalUpdateProject";
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const { tasks } = useProjectsTasks(slug);
-  const { projects } = useProjects();
+  const { projects, refresh} = useProjects();
   const [view, setView] = useState(true);
   const [search, setSearch] = useState("")
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
@@ -85,7 +85,10 @@ const filteredTasks = tasks?.filter((task) => {
               <div className="flex gap-5 items-center">
                 <h1 className="font-semibold text-2xl">{projet?.[0].name}</h1>
                 <u className="text-[#D3590B] cursor-pointer" onClick={() => setShowModal(true)}>Modifier</u>
-                {showModal && createPortal(<ModalUpdateProject closeModal={() => setShowModal(false)}/>, document.body)}
+                {showModal && createPortal(<ModalUpdateProject closeModal={() => setShowModal(false)} project={projet?.[0]} onSuccess={() => {
+                  refresh();           
+                  setShowModal(false);  
+                }} />, document.body)}
               </div>
               <h2 className="text-lg">{projet?.[0].description}</h2>
             </div>
