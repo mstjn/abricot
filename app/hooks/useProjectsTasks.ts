@@ -38,7 +38,7 @@ export function useProjectsTasks(projectID : string) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [projectID]);
 
   return { tasks, loading, refresh };
 }

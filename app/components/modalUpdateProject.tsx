@@ -2,6 +2,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { Project } from "../types";
 import { toast } from "sonner";
+import AutocompleteUpdate from "./autocompleteUpdate";
+import type { User } from "../types";
 
 export default function ModalUpdateProject({
   closeModal,
@@ -14,6 +16,38 @@ export default function ModalUpdateProject({
 }) {
   const [name, setName] = useState(project?.name);
   const [description, setDescription] = useState(project?.description);
+  const [contributors, setContributors] = useState<User[]>(project?.members.map((user) => user.user) || []);
+
+  const addContributor = async (user: User) => {
+    if (!contributors.some((c) => c.id === user.id)) {
+      setContributors((prev) => [...prev, user]);
+
+      const res = await fetch("/api/addContributor", {
+        method: "POST",
+        body: user.email,
+      });
+
+      if (res.ok) {
+        toast.success("Un contributeur vient d'être ajouté");
+      } else {
+        toast.error("Erreur dans l'ajout d'un contributeur");
+      }
+    }
+  };
+
+  const removeContributor = async (id: string) => {
+    setContributors((prev) => prev.filter((u) => u.id !== id));
+    const res = await fetch("/api/removeContributor", {
+        method: "POST",
+        body: id,
+      });
+
+      if (res.ok) {
+        toast.success("Un contributeur vient d'être supprimé");
+      } else {
+        toast.error("Erreur dans la supression d'un contributeur");
+      }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,6 +107,23 @@ export default function ModalUpdateProject({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label>Contributeurs</label>
+            <AutocompleteUpdate onSelect={addContributor} />
+
+            {contributors.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {contributors.map((user) => (
+                  <div key={user.id} className="bg-gray-100 px-3 py-1 rounded-full flex items-center gap-2 text-xs">
+                    {user.name}
+                    <button type="button" onClick={() => removeContributor(user.id)} className="text-red-500 hover:text-red-700">
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="flex gap-5">
             <button className="text-white text-md w-[50%] bg-[#1F1F1F] rounded-lg p-3" type="submit">

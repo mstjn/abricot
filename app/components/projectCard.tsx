@@ -7,6 +7,7 @@ interface projectProps {
   props: Project;
 }
 export default function ProjectCard({ props }: projectProps) {
+  
   const getInitials = (name?: string) =>
     name
       ? name
