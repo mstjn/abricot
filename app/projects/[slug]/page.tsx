@@ -11,6 +11,7 @@ import TaskCard from "@/app/components/taskCard";
 import { ComboboxDemo } from "@/app/components/comboboxDemo";
 import { createPortal } from "react-dom";
 import ModalUpdateProject from "@/app/components/modalUpdateProject";
+import { useUser } from "@/app/userContext";
 
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -21,6 +22,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   const [search, setSearch] = useState("")
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false)
+  const user  = useUser() 
 
  
   // input filter
@@ -51,6 +53,10 @@ const filteredTasks = tasks?.filter((task) => {
   const memberInitials = projet?.[0].members.map((m) => getInitials(m.user?.name));
   const members = projet?.[0].members.map((m) => m.user?.name);
   const ownerInitials = getInitials(projet?.[0].owner?.name);
+
+   let admin : boolean = false
+
+   if (projet?.[0].ownerId === user?.id) {admin = true}
 
 
   const statuts = [
@@ -84,7 +90,8 @@ const filteredTasks = tasks?.filter((task) => {
             <div className="flex flex-col gap-2">
               <div className="flex gap-5 items-center">
                 <h1 className="font-semibold text-2xl">{projet?.[0].name}</h1>
-                <u className="text-[#D3590B] cursor-pointer" onClick={() => setShowModal(true)}>Modifier</u>
+                {admin &&   <u className="text-[#D3590B] cursor-pointer" onClick={() => setShowModal(true)}>Modifier</u>}
+              
                 {showModal && createPortal(<ModalUpdateProject closeModal={() => setShowModal(false)} project={projet?.[0]} onSuccess={() => {
                   refresh();           
                   setShowModal(false);  

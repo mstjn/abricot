@@ -4,7 +4,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { useState } from "react";
 import { User } from "../types";
-import AutocompleteUsers from "./AutocompleteUsers";
+import AutocompleteUsers from "./autocompleteUsers";
 
 export default function ModalCreateProject({
   closeModal,
