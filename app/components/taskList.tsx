@@ -54,7 +54,6 @@ export default function TaskList({ props }: PropsTL) {
           {statusLabel}
         </span>
       </div>
-
       <div className="flex justify-between">
         <div className="flex gap-4 mt-8 justify-center items-center">
 

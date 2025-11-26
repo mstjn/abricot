@@ -1,17 +1,23 @@
-import Link from "next/link";
 import Image from "next/image";
 import { Task } from "../types";
 import { useState } from "react";
 import { useUser } from "../userContext";
+import ModalUpdateTask from "./modalUpdateTask";
+import { createPortal } from "react-dom";
+import type { User } from "../types";
 
 interface taskProps {
   task: Task;
   getInitials: (name: string | undefined) => string;
+  contributorList : User[] | undefined;
+  refreshTasks : () => void
 }
 
-export default function TaskCard({ task, getInitials }: taskProps) {
+export default function TaskCard({ task, getInitials, contributorList, refreshTasks }: taskProps) {
   const [openComments, setOpenComments] = useState(false);
   const currentUser = useUser();
+  const [updateTask, setUpdateTask] = useState(false)
+  
 
   let statusLabel = "";
   let statusColor = "";
@@ -53,11 +59,24 @@ export default function TaskCard({ task, getInitials }: taskProps) {
           </div>
           <p className=" text-[#6B7280]">{task.description}</p>
         </div>
-        <Link className="bg-white border p-5 rounded-xl border-[#E5E7EB] flex items-center justify-center" href="">
+        <button onClick={()=>setUpdateTask(true)} className="bg-white border p-5 rounded-xl border-[#E5E7EB] flex items-center justify-center">
           <Image src="/menu.svg" height={15} width={15} alt="menu" />
-        </Link>
+        </button>
       </div>
-
+ {updateTask &&
+              createPortal(
+                <ModalUpdateTask
+                refresh={refreshTasks}
+                task={task}
+                  closeModal={() => setUpdateTask(false)}
+                  onSuccess={() => {
+                    setUpdateTask(false);
+                    refreshTasks()
+                  }}
+                  contributorList={contributorList}
+                />,
+                document.body
+              )}
       <div className="flex gap-2 items-center">
         <p className="text-[#6B7280] text-sm">Echéance :</p>
         <Image src="/calendar-black.svg" alt="" height={16} width={16} />

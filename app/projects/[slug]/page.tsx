@@ -12,33 +12,32 @@ import { ComboboxDemo } from "@/app/components/comboboxDemo";
 import { createPortal } from "react-dom";
 import ModalUpdateProject from "@/app/components/modalUpdateProject";
 import { useUser } from "@/app/userContext";
-
+import ModalCreateTask from "@/app/components/modalCreateTask";
+import type { User } from "@/app/types";
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
-  const { tasks } = useProjectsTasks(slug);
-  const { projects, refresh} = useProjects();
+  const { tasks, refreshTasks } = useProjectsTasks(slug);
+  const { projects, refresh } = useProjects();
   const [view, setView] = useState(true);
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false)
-  const user  = useUser() 
+  const [showModal, setShowModal] = useState(false);
+  const user = useUser();
+  const [createTask, setCreateTask] = useState(false);
 
- 
+  
+
   // input filter
-const filteredTasks = tasks?.filter((task) => {
-  const q = search.toLowerCase();
+  const filteredTasks = tasks?.filter((task) => {
+    const q = search.toLowerCase();
 
-  const matchSearch =
-    task.title.toLowerCase().includes(q) ||
-    task.description.toLowerCase().includes(q);
+    const matchSearch = task.title.toLowerCase().includes(q) || task.description.toLowerCase().includes(q);
 
-  const matchStatus =
-    !selectedStatus || task.status === selectedStatus;
+    const matchStatus = !selectedStatus || task.status === selectedStatus;
 
-  return matchSearch && matchStatus;
-});
-
+    return matchSearch && matchStatus;
+  });
 
   const getInitials = (name?: string) =>
     name
@@ -49,34 +48,36 @@ const filteredTasks = tasks?.filter((task) => {
           .toUpperCase()
       : "?";
 
-  const projet: Project[] | undefined = projects?.filter((p) => p.id === slug);
-  const memberInitials = projet?.[0].members.map((m) => getInitials(m.user?.name));
-  const members = projet?.[0].members.map((m) => m.user?.name);
-  const ownerInitials = getInitials(projet?.[0].owner?.name);
+  const projet: Project | undefined = projects?.find((p) => p.id === slug);
+  const memberInitials = projet?.members.map((m) => getInitials(m.user?.name));
+  const members = projet?.members.map((m) => m.user?.name);
+  const ownerInitials = getInitials(projet?.owner?.name);
+  const contributorList: User[] | undefined = projet?.members.map(member => member.user)
 
-   let admin : boolean = false
+  let admin: boolean = false;
 
-   if (projet?.[0].ownerId === user?.id) {admin = true}
-
+  if (projet?.ownerId === user?.id) {
+    admin = true;
+  }
 
   const statuts = [
-  {
-    value: "TODO",
-    label: "À faire",
-  },
-  {
-    value: "IN_PROGRESS",
-    label: "En cours",
-  },
-  {
-    value: "DONE",
-    label: "Terminée",
-  },
-  {
-    value: "CANCELLED",
-    label: "Annulée"
-  }
-]
+    {
+      value: "TODO",
+      label: "À faire",
+    },
+    {
+      value: "IN_PROGRESS",
+      label: "En cours",
+    },
+    {
+      value: "DONE",
+      label: "Terminée",
+    },
+    {
+      value: "CANCELLED",
+      label: "Annulée",
+    },
+  ];
 
   return (
     <>
@@ -89,20 +90,46 @@ const filteredTasks = tasks?.filter((task) => {
             </Link>
             <div className="flex flex-col gap-2">
               <div className="flex gap-5 items-center">
-                <h1 className="font-semibold text-2xl">{projet?.[0].name}</h1>
-                {admin &&   <u className="text-[#D3590B] cursor-pointer" onClick={() => setShowModal(true)}>Modifier</u>}
-              
-                {showModal && createPortal(<ModalUpdateProject closeModal={() => setShowModal(false)} project={projet?.[0]} onSuccess={() => {
-                  refresh();           
-                  setShowModal(false);  
-                }} />, document.body)}
+                <h1 className="font-semibold text-2xl">{projet?.name}</h1>
+                {admin && (
+                  <u className="text-[#D3590B] cursor-pointer" onClick={() => setShowModal(true)}>
+                    Modifier
+                  </u>
+                )}
+
+                {showModal &&
+                  createPortal(
+                    <ModalUpdateProject
+                      closeModal={() => setShowModal(false)}
+                      project={projet}
+                      onSuccess={() => {
+                        refresh();
+                        setShowModal(false);
+                      }}
+                    />,
+                    document.body
+                  )}
               </div>
-              <h2 className="text-lg">{projet?.[0].description}</h2>
+              <h2 className="text-lg">{projet?.description}</h2>
             </div>
           </div>
           <div className="flex gap-5">
-            <button className="text-white text-lg bg-[#1F1F1F] rounded-xl h-14 px-6">Créer une tâche</button>
-
+            <button className="text-white text-lg bg-[#1F1F1F] rounded-xl h-14 px-6" onClick={() => setCreateTask(true)}>
+              Créer une tâche
+            </button>
+            {createTask &&
+              createPortal(
+                <ModalCreateTask
+                id={projet?.id}
+                  closeModal={() => setCreateTask(false)}
+                  onSuccess={() => {
+                    refreshTasks();
+                    setCreateTask(false);
+                  }}
+                  contributorList={contributorList}
+                />,
+                document.body
+              )}
             <button className="text-white text-lg bg-[#D3590B] rounded-xl h-14 px-6 flex justify-center items-center gap-2">
               <Image src="/ia.svg" width={15} height={15} alt="ia" />
               IA
@@ -149,8 +176,7 @@ const filteredTasks = tasks?.filter((task) => {
                 </a>
               </div>
 
-             <ComboboxDemo statuts={statuts} setSelectedStatus={setSelectedStatus} />
-
+              <ComboboxDemo statuts={statuts} setSelectedStatus={setSelectedStatus} />
 
               <div className="border border-[#E5E7EB] flex gap-2 px-8 rounded-xl h-16  justify-between">
                 <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" className="w-full" placeholder="Rechercher une tâche" />
@@ -159,11 +185,10 @@ const filteredTasks = tasks?.filter((task) => {
             </div>
           </div>
 
-
           <div className="flex flex-col gap-5 px-10">
-
-            {filteredTasks?.map((task, index) => <TaskCard getInitials={getInitials} task={task} key={index} />)}
-            
+            {filteredTasks?.map((task, index) => (
+              <TaskCard getInitials={getInitials} contributorList={contributorList} refreshTasks={refreshTasks} task={task} key={index} />
+            ))}
           </div>
         </section>
       </main>

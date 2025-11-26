@@ -5,7 +5,7 @@ export function useProjectsTasks(projectID : string) {
   const [tasks, setTasks] = useState<Task[] | null>(null);
   const [loading, setLoading] = useState(true);
 
-  async function refresh() {
+  async function refreshTasks() {
     try {
       const res = await fetch(`/api/getTasks?id=${projectID}`, {
         method: "GET",
@@ -29,7 +29,7 @@ export function useProjectsTasks(projectID : string) {
     let active = true;
 
     async function load() {
-      await refresh();
+      await refreshTasks();
       if (active) setLoading(false);
     }
 
@@ -40,5 +40,5 @@ export function useProjectsTasks(projectID : string) {
     };
   }, [projectID]);
 
-  return { tasks, loading, refresh };
+  return { tasks, loading, refreshTasks };
 }
