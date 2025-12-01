@@ -11,16 +11,15 @@ export default function ModalCreateTask({
   closeModal,
   onSuccess,
   contributorList,
-  id
+  id,
 }: {
-    id : string | undefined
+  id: string | undefined;
   contributorList: User[] | undefined;
   closeModal: () => void;
   onSuccess: () => void;
 }) {
   const [contributors, setContributors] = useState<User[]>([]);
-  const [priority, setPriority] = useState<'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'>("LOW");
-
+  const [priority, setPriority] = useState<"LOW" | "MEDIUM" | "HIGH" | "URGENT">("LOW");
 
   const addContributor = (user: User) => {
     if (!contributors.some((c) => c.id === user.id)) {
@@ -38,15 +37,12 @@ export default function ModalCreateTask({
     const formData = new FormData(form);
 
     formData.append("assigneeIds", JSON.stringify(contributors.map((u) => u.id)));
-    formData.append("id", id || ""); 
-    
+    formData.append("id", id || "");
 
     const res = await fetch("/api/createTask", {
       method: "POST",
       body: formData,
     });
-
-    
 
     if (res.ok) {
       toast.success("La tâche à bien été créee");
@@ -58,7 +54,10 @@ export default function ModalCreateTask({
 
   return (
     <aside onClick={closeModal} className="fixed inset-0 bg-slate-800/50 flex items-center justify-center">
-      <div className="bg-white relative p-16 rounded-lg flex flex-col gap-10 w-[25%]" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="bg-white relative lg:p-14 p-5 rounded-lg flex flex-col gap-10 xl:w-[25%] lg:w-[40%] w-[90%] h-[85%] overflow-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <p className="font-semibold text-2xl">Créer une tâche</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -94,67 +93,50 @@ export default function ModalCreateTask({
             )}
           </div>
 
-       <div className="flex flex-col gap-2">
-  <label>Priorité :</label>
+          <div className="flex flex-col gap-2">
+            <label>Priorité :</label>
+            <input type="hidden" name="priority" value={priority} />
 
-  {/* Champ envoyé au backend */}
-  <input type="hidden" name="priority" value={priority} />
-
-  <div className="flex gap-2">
-
-    {/* URGENT */}
-    <span
-      onClick={() => setPriority("URGENT")}
-      className={`
+            <div className="flex gap-2 overflow-auto">
+              <span
+                onClick={() => setPriority("URGENT")}
+                className={`
         cursor-pointer rounded-full h-7 px-3 flex items-center justify-center text-sm
-        ${priority === "URGENT"
-          ? "bg-[#FFE5E5] text-[#D92D20]"
-          : "bg-gray-100 text-gray-500"}
+        ${priority === "URGENT" ? "bg-[#FFE5E5] text-[#D92D20]" : "bg-gray-100 text-gray-500"}
       `}
-    >
-      Urgente
-    </span>
+              >
+                Urgente
+              </span>
 
-    {/* HIGH */}
-    <span
-      onClick={() => setPriority("HIGH")}
-      className={`
+              <span
+                onClick={() => setPriority("HIGH")}
+                className={`
         cursor-pointer rounded-full h-7 px-3 flex items-center justify-center text-sm
-        ${priority === "HIGH"
-          ? "bg-[#FFF4D6] text-[#B54708]"
-          : "bg-gray-100 text-gray-500"}
+        ${priority === "HIGH" ? "bg-[#FFF4D6] text-[#B54708]" : "bg-gray-100 text-gray-500"}
       `}
-    >
-      Élevée
-    </span>
-
-    {/* MEDIUM */}
-    <span
-      onClick={() => setPriority("MEDIUM")}
-      className={`
+              >
+                Élevée
+              </span>
+              <span
+                onClick={() => setPriority("MEDIUM")}
+                className={`
         cursor-pointer rounded-full h-7 px-3 flex items-center justify-center text-sm
-        ${priority === "MEDIUM"
-          ? "bg-[#E8F4FF] text-[#1E6BB8]"
-          : "bg-gray-100 text-gray-500"}
+        ${priority === "MEDIUM" ? "bg-[#E8F4FF] text-[#1E6BB8]" : "bg-gray-100 text-gray-500"}
       `}
-    >
-      Moyenne
-    </span>
-
-    {/* LOW */}
-    <span
-      onClick={() => setPriority("LOW")}
-      className={`
+              >
+                Moyenne
+              </span>
+              <span
+                onClick={() => setPriority("LOW")}
+                className={`
         cursor-pointer rounded-full h-7 px-3 flex items-center justify-center text-sm
-        ${priority === "LOW"
-          ? "bg-[#F1FFF7] text-[#27AE60]" : "bg-gray-100 text-gray-500"}
+        ${priority === "LOW" ? "bg-[#F1FFF7] text-[#27AE60]" : "bg-gray-100 text-gray-500"}
       `}
-    >
-      Faible
-    </span>
-
-  </div>
-</div>
+              >
+                Faible
+              </span>
+            </div>
+          </div>
 
           <button className="text-white text-md w-[50%] bg-[#1F1F1F] rounded-lg p-3 mt-3" type="submit">
             + Ajouter une tâche

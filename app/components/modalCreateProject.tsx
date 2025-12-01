@@ -55,7 +55,7 @@ export default function ModalCreateProject({
       className="fixed inset-0 bg-slate-800/50 flex items-center justify-center"
     >
       <div
-        className="bg-white relative p-16 rounded-lg flex flex-col gap-10 w-[25%]"
+        className="bg-white relative lg:p-16 p-8 rounded-lg flex flex-col gap-10 xl:w-[25%] lg:w-[40%] w-[90%]"
         onClick={(e) => e.stopPropagation()}
       >
         <p className="font-semibold text-2xl">Créer un projet</p>
@@ -105,7 +105,7 @@ export default function ModalCreateProject({
             )}
           </div>
           <button
-            className="text-white text-md w-[50%] bg-[#1F1F1F] rounded-lg p-3 mt-3"
+            className="text-white text-md w-40 bg-[#1F1F1F] rounded-lg p-3 mt-3"
             type="submit"
           >
             Ajouter un projet

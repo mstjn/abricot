@@ -36,30 +36,30 @@ export default function TaskKanban({ props }: PropsTK) {
     : "";
 
   return (
-    <article className="px-10 py-6 border border-[#E5E7EB] rounded-xl flex flex-col gap-5">
-      <div className="flex">
-        <div className="flex flex-col gap-2">
+    <article className="px-5 xl:px-10 py-6 border border-[#E5E7EB] rounded-xl flex flex-col gap-5">
+      <div className="flex-col">
+        <div className="flex justify-between mb-2 xl:mb-5">
           <h4 className="font-semibold text-lg">{props.title}</h4>
-          <p className="text-sm text-[#6B7280]">{props.description}</p>
+          <span className={`${statusColor} rounded-full h-7 px-3 flex items-center justify-center shrink-0 whitespace-nowrap`}>{statusLabel}</span>
         </div>
-        <span className={`${statusColor} rounded-full h-7 px-3 flex items-center justify-center shrink-0 whitespace-nowrap`}>{statusLabel}</span>
+        <p className="text-sm text-[#6B7280]">{props.description}</p>
       </div>
 
       <div className="flex justify-between">
-        <div className="flex gap-4 justify-center items-center">
+        <div className="flex flex-col gap-4 xl:flex-row xl:justify-center xl:items-center">
           <span className="flex gap-2 items-center">
             <Image src="/folder.svg" alt="" height={16} width={16} />
             <p className="text-[#6B7280] text-xs">{props.projectName}</p>
           </span>
 
-          <p className="text-[#9CA3AF]">|</p>
+          <p className="text-[#9CA3AF] hidden xl:block">|</p>
 
           <span className="flex gap-2 items-center">
             <Image src="/calendar.svg" alt="" height={16} width={16} />
             <p className="text-[#6B7280] text-xs">{dueDateFormatted}</p>
           </span>
 
-          <p className="text-[#9CA3AF]">|</p>
+          <p className="text-[#9CA3AF] hidden xl:block">|</p>
 
           <span className="flex gap-2 items-center">
             <Image src="/comment.svg" alt="" height={16} width={16} />
@@ -67,7 +67,9 @@ export default function TaskKanban({ props }: PropsTK) {
           </span>
         </div>
       </div>
-      <Link href={`/projects/${props.projectID}`} className="text-white bg-[#1F1F1F] rounded-xl py-3 flex justify-center w-[30%]">Voir</Link>
+      <Link href={`/projects/${props.projectID}`} className="text-white bg-[#1F1F1F] rounded-xl py-3 flex justify-center self-center xl:self-start w-25">
+        Voir
+      </Link>
     </article>
   );
 }

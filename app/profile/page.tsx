@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Footer from "../components/footer";
-import LogoutButton from "../components/LogoutButton";
+import LogoutButton from "../components//logoutButton";
 import Navbar from "../components/navbar";
 import { useUser } from "../userContext";
 import { toast } from "sonner";
@@ -72,8 +72,8 @@ export default function Page() {
   return (
     <>
       <Navbar dashboard={false} project={false} profile={true} />
-      <main className="px-40 py-12">
-        <article className="bg-white border border-[#E5E7EB] px-16 py-8 rounded-xl">
+      <main className="lg:px-40 lg:py-12 px-5 py-10">
+        <article className="bg-white border border-[#E5E7EB] lg:px-16 lg:py-8 px-5 py-4 rounded-xl">
           <h1 className="font-semibold text-xl">Mon compte</h1>
           <h2 className="text-lg text-[#6B7280]">{firstName + " " + lastName}</h2>
           <form className="flex flex-col gap-4 mt-10" action="/api/edit" method="POST" onSubmit={handleSubmit}>
@@ -131,8 +131,8 @@ export default function Page() {
               {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
             </div>
 
-            <div className="flex justify-between">
-              <button type="submit" className="bg-[#1F1F1F] text-lg text-white py-3 w-[18%] rounded-xl hover:opacity-80 mt-3 pl-2">
+            <div className="flex lg:flex-row flex-col lg:justify-between items-center">
+              <button type="submit" className="bg-[#1F1F1F] text-lg text-white py-3 w-40 rounded-xl hover:opacity-80 mt-3 pl-2">
                 Modifier les informations
               </button>
 

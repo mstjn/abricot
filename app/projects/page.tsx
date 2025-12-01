@@ -14,11 +14,11 @@ export default function Page() {
   return (
     <>
       <Navbar dashboard={false} project={true} profile={false} />
-      <main className="px-25 py-20 flex flex-col gap-10">
-        <section className="flex justify-between">
+      <main className="xl:px-25 lg:px-15 px-5 py-20 flex flex-col gap-10">
+        <section className="flex lg:flex-row flex-col justify-between">
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold text-2xl">Mes projets</h1>
-            <h2 className="text-lg">Gérer vos projets</h2>
+            <h2 className="text-lg mb-5 lg:mb-0">Gérer vos projets</h2>
           </div>
            <button className="text-white text-lg bg-[#1F1F1F] rounded-xl h-14 px-6" onClick={() => setShowModal(true)}>+ Créer un projet</button>
                    {showModal && createPortal(<ModalCreateProject closeModal={() => setShowModal(false)}  onSuccess={() => {

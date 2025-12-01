@@ -85,7 +85,7 @@ export default function ModalUpdateProject({
 
   return (
     <aside onClick={closeModal} className="fixed inset-0 bg-slate-800/50 flex items-center justify-center">
-      <div className="bg-white relative p-16 rounded-lg flex flex-col gap-10 w-[25%]" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white relative lg:p-16 p-5 rounded-lg flex flex-col gap-10 lg:w-[40%] w-[90%] xl:w-[25%]" onClick={(e) => e.stopPropagation()}>
         <p className="font-semibold text-2xl">Modifier un projet</p>
         <form action="" className="flex flex-col gap-5" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">

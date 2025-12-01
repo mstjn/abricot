@@ -17,7 +17,7 @@ export default function HomePage() {
   const [view, setView] = useState<boolean>(true);
   const tasksProjects: TaskProjectItem[] = [];
   const [search, setSearch] = useState<string>("");
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   projects?.forEach((project) => {
     project.tasks?.forEach((task) => {
@@ -29,9 +29,15 @@ export default function HomePage() {
         dueDate: task.dueDate,
         commentsCount: task.comments.length,
         projectName: project.name,
-        projectID: project.id
+        projectID: project.id,
       });
     });
+  });
+
+  const priorityOrder = { URGENT: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
+
+  tasksProjects.sort((a, b) => {
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
   });
 
   const filteredTasks = tasksProjects.filter((task) => {
@@ -43,35 +49,42 @@ export default function HomePage() {
   const tasksInProgress = tasksProjects.filter((task) => task.status === "IN_PROGRESS");
   const tasksDone = tasksProjects.filter((task) => task.status === "DONE");
 
-  
-
   return (
     <>
       <Navbar dashboard={true} project={false} profile={false} />
-      <main className="px-25 py-20 flex flex-col gap-10">
-        <section className="flex justify-between">
+      <main className="lg:px-10 px-2 py-20 flex flex-col gap-10 xl:px-20">
+        <section className="md:flex-row justify-between flex-col">
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold text-2xl">Tableau de bord</h1>
-            <h2 className="text-lg">Bonjour {user?.name}, voici un aperçu de vos projets et tâches</h2>
+            <h2 className="text-lg mb-5 lg:mb-0">Bonjour {user?.name}, voici un aperçu de vos projets et tâches</h2>
           </div>
-          <button className="text-white text-lg bg-[#1F1F1F] rounded-xl h-14 px-6" onClick={() => setShowModal(true)}>+ Créer un projet</button>
-          {showModal && createPortal(<ModalCreateProject closeModal={() => setShowModal(false)}  onSuccess={() => {
-                  refresh();            
-                  setShowModal(false);  
-                }}/>, document.body)}
+          <button className="text-white text-lg bg-[#1F1F1F] rounded-xl h-14 px-6" onClick={() => setShowModal(true)}>
+            + Créer un projet
+          </button>
+          {showModal &&
+            createPortal(
+              <ModalCreateProject
+                closeModal={() => setShowModal(false)}
+                onSuccess={() => {
+                  refresh();
+                  setShowModal(false);
+                }}
+              />,
+              document.body
+            )}
         </section>
 
         <section className="flex gap-5 mt-5">
           <a
             onClick={() => setView(true)}
-            className={`cursor-pointer flex gap-3 ${view ? "bg-[#FFE8D9]" : "bg-white"} w-[6%] items-center justify-center rounded-lg py-3`}
+            className={`cursor-pointer flex gap-3 ${view ? "bg-[#FFE8D9]" : "bg-white"} w-25 items-center justify-center rounded-lg py-3`}
           >
             <Image src="/list.svg" height={16} width={16} alt="Liste" />
             <p className="text-[#D3590B] text-md">Liste</p>
           </a>
           <a
             onClick={() => setView(false)}
-            className={`cursor-pointer flex gap-3 ${view ? "bg-white" : "bg-[#FFE8D9]"} w-[6%] items-center justify-center rounded-lg py-3`}
+            className={`cursor-pointer flex gap-3 ${view ? "bg-white" : "bg-[#FFE8D9]"} w-25  items-center justify-center rounded-lg py-3`}
           >
             <Image src="/kanban.svg" height={16} width={16} alt="Liste" />
             <p className=" text-[#D3590B] text-md">Kanban</p>
@@ -79,15 +92,15 @@ export default function HomePage() {
         </section>
 
         {view ? (
-          <section className="bg-white border border-[#E5E7EB] px-16 py-10 rounded-xl">
-            <div className="flex justify-between mb-10">
+          <section className="bg-white border border-[#E5E7EB] lg:px-16 px-2 py-10 rounded-xl">
+            <div className="flex lg:flex-row flex-col justify-between mb-10">
               <div className="flex flex-col gap-2">
                 <h3 className="font-semibold text-xl">Mes tâches assignées</h3>
-                <p className="text-[#6B7280] text-lg">Par ordre de priorité</p>
+                <p className="text-[#6B7280] text-lg lg:mb-0 mb-5">Par ordre de priorité</p>
               </div>
 
-              <div className="border border-[#E5E7EB] flex gap-2 px-5 rounded-xl w-[23%] justify-between">
-                <input type="text" className="w-full" placeholder="Rechercher une tâche" value={search} onChange={(e) => setSearch(e.target.value)} />
+              <div className="border border-[#E5E7EB] flex gap-2 px-5 rounded-xl w-70 justify-between">
+                <input type="text" className="w-full h-15" placeholder="Rechercher une tâche" value={search} onChange={(e) => setSearch(e.target.value)} />
                 <Image src="/search.svg" height={15} width={15} alt="search" />
               </div>
             </div>
@@ -99,8 +112,8 @@ export default function HomePage() {
             </div>
           </section>
         ) : (
-          <section className="flex justify-between">
-            <div className="flex flex-col  border border-[#FFE0E0] rounded-xl bg-white w-[32%] px-6 py-10 gap-5">
+          <section className="flex lg:flex-row flex-col lg:justify-between gap-5">
+            <div className="flex flex-col  border border-[#FFE0E0] rounded-xl bg-white lg:w-[32%] w-full px-6 py-10 gap-5">
               <div className="flex gap-2 items-center mb-4">
                 <h3 className="font-semibold text-xl">À faire</h3>
                 <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">{tasksToDo.length}</span>
@@ -109,7 +122,7 @@ export default function HomePage() {
                 <TaskKanban key={index} props={tp} />
               ))}
             </div>
-            <div className="flex flex-col border border-[#FFE0E0] rounded-xl bg-white w-[32%] px-6 py-10 gap-5">
+            <div className="flex flex-col border border-[#FFE0E0] rounded-xl bg-white lg:w-[32%] w-full px-6 py-10 gap-5">
               <div className="flex gap-2 items-center mb-4">
                 <h3 className="font-semibold text-xl">En cours</h3>
                 <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">{tasksInProgress.length}</span>
@@ -118,7 +131,7 @@ export default function HomePage() {
                 <TaskKanban key={index} props={tp} />
               ))}
             </div>
-            <div className="flex flex-col border border-[#FFE0E0] rounded-xl bg-white w-[32%] px-6 py-10 gap-5">
+            <div className="flex flex-col border border-[#FFE0E0] rounded-xl lg:w-[32%] w-full bg-white px-6 py-10 gap-5">
               <div className="flex gap-2 items-center mb-4">
                 <h3 className="font-semibold text-xl">Terminées</h3>
                 <span className="rounded-2xl bg-[#E5E7EB] text-[#6B7280] px-4">{tasksDone.length}</span>

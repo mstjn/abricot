@@ -29,13 +29,13 @@ const Page = () => {
   };
 
   return (
-    <div className="">
-      <div className="bg-[#F9FAFB] w-[35%] h-screen flex flex-col items-center justify-between py-20">
+    <div className="flex">
+      <div className="bg-[#F9FAFB] xl:w-[35%] md:w-[45%] w-full h-screen flex flex-col items-center justify-between py-20">
         <Image alt="" height={100} width={250} src="/Logo.png" />
 
         <div className="w-full flex flex-col items-center gap-10">
           <h1 className="text-[#D3590B] font-bold text-4xl">Connexion</h1>
-          <form onSubmit={handleLogin} className="flex flex-col w-[50%] gap-5">
+          <form onSubmit={handleLogin} className="flex flex-col md:w-[50%] w-[75%] gap-5">
             <div className="flex flex-col gap-2">
               <label htmlFor="mail" className="text-sm">
                 Email
@@ -82,7 +82,13 @@ const Page = () => {
         </p>
       </div>
 
-      <Image alt="" fill className="-z-10 object-cover" src="/login.jpg" />
+<div className="xl:w-[65%] w-[55%] relative hidden md:block">
+   <Image alt="" fill className="-z-10 object-cover absolute" src="/login.jpg" />
+</div>
+
+ 
+
+      
     </div>
   );
 };
