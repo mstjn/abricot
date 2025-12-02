@@ -6,10 +6,23 @@ import { useProjects } from "../hooks/useProjects";
 import { Project } from "../types";
 import { createPortal } from "react-dom";
 import ModalCreateProject from "../components/modalCreateProject";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export default function Page() {
   const { projects, refresh } = useProjects();
   const [showModal, setShowModal] = useState(false)
+
+  useEffect(() => {
+    const root = document.getElementById("app-root");
+    if (!root) return;
+  
+    root.inert = showModal;
+    document.body.style.overflow = showModal ? "hidden" : "";
+  
+    return () => {
+      root.inert = false;
+      document.body.style.overflow = "";
+    };
+  }, [showModal]);
 
   return (
     <>

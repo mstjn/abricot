@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Task } from "../types";
 import Image from "next/image";
@@ -14,7 +14,6 @@ export default function ModalIaGeneration({ closeModal, id, refresh }: { closeMo
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
 
-  // 🔥 Génération IA
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -93,6 +92,14 @@ export default function ModalIaGeneration({ closeModal, id, refresh }: { closeMo
     }
   };
 
+   useEffect(() => {
+    const closeOnEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", closeOnEsc);
+    return () => document.removeEventListener("keydown", closeOnEsc);
+  },[]);
+
   return (
     <aside onClick={closeModal} className="fixed inset-0 bg-slate-800/50 flex items-center justify-center">
       <div
@@ -112,9 +119,10 @@ export default function ModalIaGeneration({ closeModal, id, refresh }: { closeMo
               <div key={index} className="border border-[#E5E7EB] rounded-lg flex-col p-5 flex gap-2">
                 {editingIndex === index ? (
                   <>
-                    <input className="border px-2 py-1 rounded w-full" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+                    <input aria-label="title" className="border px-2 py-1 rounded w-full" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
 
                     <textarea
+                    aria-label="description"
                       className="border px-2 py-1 rounded w-full text-sm"
                       rows={3}
                       value={editDescription}
@@ -184,6 +192,7 @@ export default function ModalIaGeneration({ closeModal, id, refresh }: { closeMo
 
         <form onSubmit={handleSubmit} className="flex bg-[#F9FAFB] p-3 rounded-full justify-between">
           <input
+          aria-label="prompt"
             className="w-full"
             placeholder="Décrivez les tâches que vous souhaitez ajouter..."
             value={message}

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Task } from "../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../userContext";
 import ModalUpdateTask from "./modalUpdateTask";
 import { createPortal } from "react-dom";
@@ -99,6 +99,19 @@ export default function TaskCard({ task, getInitials, contributorList, refreshTa
       toast.error("Erreur dans la suppression du commentaire");
     }
   };
+
+  useEffect(() => {
+  const root = document.getElementById("app-root");
+  if (!root) return;
+
+  root.inert = updateTask;
+  document.body.style.overflow = updateTask ? "hidden" : "";
+
+  return () => {
+    root.inert = false;
+    document.body.style.overflow = "";
+  };
+}, [updateTask]);
 
   return (
     <article className={`lg:px-10 px-2 ${openComments ? "py-6" : "pt-6"} border border-[#E5E7EB] rounded-xl flex flex-col gap-6`}>
@@ -213,6 +226,7 @@ export default function TaskCard({ task, getInitials, contributorList, refreshTa
               placeholder="Ajouter un commentraire..."
               className="bg-[#F3F4F6] rounded-xl w-full p-5 resize-none border-none outline-none"
               value={comment}
+              aria-label="search"
               onChange={(e) => setComment(e.target.value)}
             ></textarea>
           </div>

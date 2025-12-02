@@ -4,7 +4,7 @@ import Footer from "./components/footer";
 import { useProjectsWithTasks } from "./hooks/useProjectsWithTasks";
 import { useUser } from "./userContext";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskKanban from "./components/taskKanban";
 import TaskList from "./components/taskList";
 import type { TaskProjectItem } from "./types";
@@ -48,6 +48,20 @@ export default function HomePage() {
   const tasksToDo = tasksProjects.filter((task) => task.status === "TODO");
   const tasksInProgress = tasksProjects.filter((task) => task.status === "IN_PROGRESS");
   const tasksDone = tasksProjects.filter((task) => task.status === "DONE");
+
+useEffect(() => {
+  const root = document.getElementById("app-root");
+  if (!root) return;
+
+  root.inert = showModal;
+  document.body.style.overflow = showModal ? "hidden" : "";
+
+  return () => {
+    root.inert = false;
+    document.body.style.overflow = "";
+  };
+}, [showModal]);
+
 
   return (
     <>
@@ -100,7 +114,8 @@ export default function HomePage() {
               </div>
 
               <div className="border border-[#E5E7EB] flex gap-2 px-5 rounded-xl w-70 justify-between">
-                <input type="text" className="w-full h-15" placeholder="Rechercher une tâche" value={search} onChange={(e) => setSearch(e.target.value)} />
+                
+                <input type="text" className="w-full h-15" placeholder="Rechercher une tâche" value={search} aria-label="search" onChange={(e) => setSearch(e.target.value)} />
                 <Image src="/search.svg" height={15} width={15} alt="search" />
               </div>
             </div>

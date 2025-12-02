@@ -4,8 +4,7 @@ import "./globals.css";
 import { UserProvider } from "../app/userContext";
 import { getProfile } from "./api/api";
 import type { User } from "./types";
-import { Toaster } from "@/components/ui/sonner"
-
+import { Toaster } from "@/components/ui/sonner";
 
 // Chargement des polices Google
 const inter = Inter({
@@ -30,19 +29,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  
-
-  const user : User | null = await getProfile()
-
+  const user: User | null = await getProfile();
 
   return (
     <html lang="fr">
       <body className={`${inter.variable} ${manrope.variable} font-sans antialiased`}>
-        <UserProvider initialUser={user}>{children}</UserProvider>
-         <Toaster  position="top-right"
-          theme="dark"
-           richColors/>
+        <div id="app-root">
+          <UserProvider initialUser={user}>{children}</UserProvider>
+          <Toaster position="top-right" theme="dark" richColors />
+        </div>
       </body>
     </html>
   );

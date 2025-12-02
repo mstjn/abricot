@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Project } from "../types";
 import { toast } from "sonner";
 import AutocompleteUpdate from "./autocompleteUpdate";
@@ -83,6 +83,14 @@ export default function ModalUpdateProject({
     }
   };
 
+   useEffect(() => {
+    const closeOnEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", closeOnEsc);
+    return () => document.removeEventListener("keydown", closeOnEsc);
+  },[]);
+
   return (
     <aside onClick={closeModal} className="fixed inset-0 bg-slate-800/50 flex items-center justify-center">
       <div className="bg-white relative lg:p-16 p-5 rounded-lg flex flex-col gap-10 lg:w-[40%] w-[90%] xl:w-[25%]" onClick={(e) => e.stopPropagation()}>
@@ -91,6 +99,7 @@ export default function ModalUpdateProject({
           <div className="flex flex-col gap-1">
             <label htmlFor="title">Titre*</label>
             <input
+            id="title"
               type="text"
               name="name"
               className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs"
@@ -101,6 +110,7 @@ export default function ModalUpdateProject({
           <div className="flex flex-col gap-1">
             <label htmlFor="description">Description*</label>
             <input
+            id="description"
               type="text"
               name="description"
               className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs"

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Task, User } from "../types";
 import { Calendar28 } from "./formatDate";
 import AutocompleteTasks from "./autocompleteTasks";
@@ -77,6 +77,14 @@ export default function ModalUpdateTask({
     }
   };
 
+   useEffect(() => {
+    const closeOnEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", closeOnEsc);
+    return () => document.removeEventListener("keydown", closeOnEsc);
+  },[]);
+
   return (
     <aside onClick={closeModal} className="fixed inset-0 bg-slate-800/50 flex items-center justify-center">
       <div className="bg-white relative lg:p-16 p-5 rounded-lg flex flex-col gap-10 xl:w-[25%] lg:w-[40%] w-[90%] h-[85%] overflow-auto" onClick={(e) => e.stopPropagation()}>
@@ -87,6 +95,7 @@ export default function ModalUpdateTask({
             <label htmlFor="title">Titre*</label>
             <input
               required
+              id="title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -96,9 +105,10 @@ export default function ModalUpdateTask({
           </div>
 
           <div className="flex flex-col gap-1">
-            <label>Description*</label>
+            <label htmlFor="description">Description*</label>
             <input
               required
+              id="description"
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}

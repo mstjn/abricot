@@ -4,7 +4,7 @@ import Navbar from "@/app/components/navbar";
 import { useProjects } from "@/app/hooks/useProjects";
 import { useProjectsTasks } from "@/app/hooks/useProjectsTasks";
 import { Project } from "@/app/types";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import TaskCard from "@/app/components/taskCard";
@@ -84,6 +84,33 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
       label: "Annulée",
     },
   ];
+
+  useEffect(() => {
+    const root = document.getElementById("app-root");
+    if (!root) return;
+  
+    root.inert = createTask;
+    document.body.style.overflow = createTask ? "hidden" : "";
+  
+    return () => {
+      root.inert = false;
+      document.body.style.overflow = "";
+    };
+  }, [createTask]);
+
+
+  useEffect(() => {
+    const root = document.getElementById("app-root");
+    if (!root) return;
+  
+    root.inert = IA;
+    document.body.style.overflow = IA ? "hidden" : "";
+  
+    return () => {
+      root.inert = false;
+      document.body.style.overflow = "";
+    };
+  }, [IA]);
 
   return (
     <>
@@ -196,7 +223,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
               <ComboboxDemo statuts={statuts} setSelectedStatus={setSelectedStatus} />
 
               <div className="border border-[#E5E7EB] flex gap-2 lg:px-8 px-5 rounded-xl h-16  justify-between">
-                <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" className="w-full" placeholder="Rechercher une tâche" />
+                <input value={search} aria-label="search" onChange={(e) => setSearch(e.target.value)} type="text" className="w-full" placeholder="Rechercher une tâche" />
                 <Image src="/search.svg" height={15} width={15} alt="search" />
               </div>
             </div>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../types";
 import { Calendar28 } from "./formatDate";
 import AutocompleteTasks from "./autocompleteTasks";
@@ -52,6 +52,14 @@ export default function ModalCreateTask({
     }
   };
 
+   useEffect(() => {
+    const closeOnEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", closeOnEsc);
+    return () => document.removeEventListener("keydown", closeOnEsc);
+  },[]);
+
   return (
     <aside onClick={closeModal} className="fixed inset-0 bg-slate-800/50 flex items-center justify-center">
       <div
@@ -63,12 +71,12 @@ export default function ModalCreateTask({
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
             <label htmlFor="title">Titre*</label>
-            <input required type="text" name="title" className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs" />
+            <input required id="title" type="text" name="title" className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs" />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label>Description*</label>
-            <input required type="text" name="description" className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs" />
+            <label htmlFor="description">Description*</label>
+            <input required id="description" type="text" name="description" className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs" />
           </div>
           <div className="flex flex-col gap-1">
             <label>Echéance*</label>

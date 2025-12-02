@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { User } from "../types";
 import AutocompleteUsers from "./autocompleteUsers";
-
+import { useEffect } from "react";
 export default function ModalCreateProject({
   closeModal,
   onSuccess,
@@ -47,6 +47,15 @@ export default function ModalCreateProject({
       toast.error("Erreur dans la création du projet");
     }
   };
+
+  useEffect(() => {
+  const closeOnEsc = (e: KeyboardEvent) => {
+    if (e.key === "Escape") closeModal();
+  };
+  document.addEventListener("keydown", closeOnEsc);
+  return () => document.removeEventListener("keydown", closeOnEsc);
+},[]);
+
   
 
   return (
@@ -64,6 +73,7 @@ export default function ModalCreateProject({
           <div className="flex flex-col gap-1">
             <label htmlFor="title">Titre*</label>
             <input
+            id="title"
               required
               type="text"
               name="name"
@@ -72,9 +82,10 @@ export default function ModalCreateProject({
           </div>
 
           <div className="flex flex-col gap-1">
-            <label>Description*</label>
+            <label htmlFor="description">Description*</label>
             <input
               required
+              id="description"
               type="text"
               name="description"
               className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs"
