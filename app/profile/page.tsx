@@ -132,7 +132,7 @@ export default function Page() {
             </div>
 
             <div className="flex lg:flex-row flex-col lg:justify-between items-center">
-              <button type="submit" className="bg-[#1F1F1F] text-lg text-white py-3 w-40 rounded-xl hover:opacity-80 mt-3 pl-2">
+              <button type="submit" className="bg-[#1F1F1F] text-lg text-white py-3 lg:w-60 w-40 rounded-xl hover:opacity-80 mt-3 pl-2">
                 Modifier les informations
               </button>
 

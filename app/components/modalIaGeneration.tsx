@@ -10,6 +10,9 @@ export default function ModalIaGeneration({ closeModal, id, refresh }: { closeMo
   const [loading, setLoading] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [saving, setSaving] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
 
   // 🔥 Génération IA
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -107,18 +110,68 @@ export default function ModalIaGeneration({ closeModal, id, refresh }: { closeMo
           <div className="flex flex-col gap-4 overflow-auto">
             {tasks.map((task, index) => (
               <div key={index} className="border border-[#E5E7EB] rounded-lg flex-col p-5 flex gap-2">
-                <h4 className="font-semibold">{task.title}</h4>
-                <p className="text-[#6B7280] text-sm">{task.description}</p>
+                {editingIndex === index ? (
+                  <>
+                    <input className="border px-2 py-1 rounded w-full" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+
+                    <textarea
+                      className="border px-2 py-1 rounded w-full text-sm"
+                      rows={3}
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <h4 className="font-semibold">{task.title}</h4>
+                    <p className="text-[#6B7280] text-sm">{task.description}</p>
+                  </>
+                )}
+
                 <div className="flex gap-2">
-                  <span className="flex gap-2 items-center cursor-pointer" onClick={() => removeTask(index)}>
-                    <Image src="/delete.svg" alt="delete" height={16} width={16} />
-                    <p className="text-[#6B7280] text-sm">Supprimer</p>
-                  </span>
-                  <p className="text-[#9CA3AF]">|</p>
-                  <span className="flex gap-2 items-center cursor-pointer">
-                    <Image src="/edit.svg" alt="edit" height={16} width={16} />
-                    <p className="text-[#6B7280] text-sm">Modifier</p>
-                  </span>
+                  {editingIndex === index ? (
+                    <div className="flex gap-3">
+                      <button
+                        className="text-green-600 text-sm"
+                        onClick={() => {
+                          setTasks((prev) => prev.map((t, i) => (i === index ? { ...t, title: editTitle, description: editDescription } : t)));
+                          setEditingIndex(null);
+                        }}
+                      >
+                        Valider
+                      </button>
+
+                      <button
+                        className="text-red-500 text-sm"
+                        onClick={() => {
+                          setEditingIndex(null);
+                        }}
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <span className="flex gap-2 items-center cursor-pointer" onClick={() => removeTask(index)}>
+                        <Image src="/delete.svg" alt="delete" height={16} width={16} />
+                        <p className="text-[#6B7280] text-sm">Supprimer</p>
+                      </span>
+
+                      <p className="text-[#9CA3AF]">|</p>
+
+                      <span
+                        className="flex gap-2 items-center cursor-pointer"
+                        onClick={() => {
+                          setEditingIndex(index);
+                          setEditTitle(task.title);
+                          setEditDescription(task.description);
+                        }}
+                      >
+                        <Image src="/edit.svg" alt="edit" height={16} width={16} />
+                        <p className="text-[#6B7280] text-sm">Modifier</p>
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
