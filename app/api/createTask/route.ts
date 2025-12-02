@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
   });
 
   const creationJson = await creationRes.json();
-
+  
   if (!creationRes.ok) {
     return NextResponse.json({ error: "Erreur création de tâche", details: creationJson }, { status: creationRes.status });
   }

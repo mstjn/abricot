@@ -53,7 +53,7 @@ export default function HomePage() {
     <>
       <Navbar dashboard={true} project={false} profile={false} />
       <main className="lg:px-10 px-2 py-20 flex flex-col gap-10 xl:px-20">
-        <section className="md:flex-row justify-between flex-col">
+        <section className="flex md:flex-row justify-between flex-col">
           <div className="flex flex-col gap-2">
             <h1 className="font-semibold text-2xl">Tableau de bord</h1>
             <h2 className="text-lg mb-5 lg:mb-0">Bonjour {user?.name}, voici un aperçu de vos projets et tâches</h2>

@@ -14,6 +14,7 @@ import ModalUpdateProject from "@/app/components/modalUpdateProject";
 import { useUser } from "@/app/userContext";
 import ModalCreateTask from "@/app/components/modalCreateTask";
 import type { User } from "@/app/types";
+import ModalIaGeneration from "@/app/components/modalIaGeneration";
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -25,6 +26,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   const [showModal, setShowModal] = useState(false);
   const user = useUser();
   const [createTask, setCreateTask] = useState(false);
+  const [IA, setIA] = useState(false);
 
   const priorityOrder = { URGENT: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
 
@@ -134,10 +136,14 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
                 />,
                 document.body
               )}
-            <button className="text-white text-lg bg-[#D3590B] rounded-xl h-14 px-6 flex justify-center items-center gap-2">
+            <button
+              className="text-white text-lg bg-[#D3590B] rounded-xl h-14 px-6 flex justify-center items-center gap-2"
+              onClick={() => setIA(true)}
+            >
               <Image src="/ia.svg" width={15} height={15} alt="ia" />
               IA
             </button>
+            {IA && createPortal(<ModalIaGeneration closeModal={() => setIA(false)} id={projet?.id} refresh={refreshTasks} />, document.body)}
           </div>
         </section>
         <section className="bg-[#F3F4F6] flex flex-col lg:flex-row gap-10 xl:justify-between rounded-xl xl:px-12 lg:px-8 px-2 py-5 items-center">
