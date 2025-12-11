@@ -119,7 +119,7 @@ export default function ModalUpdateProject({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label>Contributeurs</label>
+            <label htmlFor="assignes">Contributeurs</label>
             <AutocompleteUpdate onSelect={addContributor} />
 
             {contributors.length > 0 && (

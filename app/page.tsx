@@ -89,20 +89,20 @@ useEffect(() => {
         </section>
 
         <section className="flex gap-5 mt-5">
-          <a
+          <button
             onClick={() => setView(true)}
             className={`cursor-pointer flex gap-3 ${view ? "bg-[#FFE8D9]" : "bg-white"} w-25 items-center justify-center rounded-lg py-3`}
           >
             <Image src="/list.svg" height={16} width={16} alt="Liste" />
             <p className="text-[#D3590B] text-md">Liste</p>
-          </a>
-          <a
+          </button>
+          <button
             onClick={() => setView(false)}
             className={`cursor-pointer flex gap-3 ${view ? "bg-white" : "bg-[#FFE8D9]"} w-25  items-center justify-center rounded-lg py-3`}
           >
             <Image src="/kanban.svg" height={16} width={16} alt="Liste" />
             <p className=" text-[#D3590B] text-md">Kanban</p>
-          </a>
+          </button>
         </section>
 
         {view ? (

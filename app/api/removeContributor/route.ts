@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Id manquant" }, { status: 400 });
   }
 
-
   if (!referer) {
     return NextResponse.json({ error: "Referer manquant" }, { status: 400 });
   }

@@ -38,8 +38,9 @@ export default function AutocompleteTasks({ users, onSelect }: Props) {
   }, []);
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className="relative"  ref={containerRef}>
       <input
+      id="assignes"
         type="text"
         className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs w-full"
         placeholder="Rechercher un utilisateur…"

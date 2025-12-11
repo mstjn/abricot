@@ -79,12 +79,12 @@ export default function ModalCreateTask({
             <input required id="description" type="text" name="description" className="border border-[#E5E7EB] rounded h-12 pl-2 text-[#6B7280] text-xs" />
           </div>
           <div className="flex flex-col gap-1">
-            <label>Echéance*</label>
+            <label htmlFor="date">Echéance*</label>
             <Calendar28 />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label>Assigné à :</label>
+            <label htmlFor="assignes">Assigné à :</label>
             <AutocompleteTasks users={contributorList} onSelect={addContributor} />
 
             {contributors.length > 0 && (

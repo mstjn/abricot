@@ -29,8 +29,6 @@ export async function POST(req: Request) {
   });
 
   if (!res.ok) {
-    console.log(await res.json());
-
     return NextResponse.json({ error: "Erreur Mistral" }, { status: 500 });
   }
 

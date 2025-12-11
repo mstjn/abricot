@@ -82,13 +82,9 @@ const Page = () => {
         </p>
       </div>
 
-<div className="xl:w-[65%] w-[55%] relative hidden md:block">
-   <Image alt="" fill className="-z-10 object-cover absolute" src="/login.jpg" />
-</div>
-
- 
-
-      
+      <div className="xl:w-[65%] w-[55%] relative hidden md:block">
+        <Image alt="" fill className="object-cover absolute" src="/login.jpg" />
+      </div>
     </div>
   );
 };

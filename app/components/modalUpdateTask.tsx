@@ -117,12 +117,12 @@ export default function ModalUpdateTask({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label>Echéance*</label>
+            <label htmlFor="date">Echéance*</label>
             <Calendar28 dateUpdate={date} />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label>Assigné à :</label>
+            <label htmlFor="assignes">Assigné à :</label>
             <AutocompleteTasks users={contributorList} onSelect={addContributor} />
 
             {contributors.length > 0 && (

@@ -36,40 +36,64 @@ export default function TaskKanban({ props }: PropsTK) {
     : "";
 
   return (
-    <article className="px-5 xl:px-10 py-6 border border-[#E5E7EB] rounded-xl flex flex-col gap-5">
-      <div className="flex-col">
-        <div className="flex justify-between mb-2 xl:mb-5">
-          <h4 className="font-semibold text-lg">{props.title}</h4>
-          <span className={`${statusColor} rounded-full h-7 px-3 flex items-center justify-center shrink-0 whitespace-nowrap`}>{statusLabel}</span>
-        </div>
-        <p className="text-sm text-[#6B7280]">{props.description}</p>
-      </div>
+    <article 
+  className="px-5 xl:px-10 py-6 border border-[#E5E7EB] rounded-xl flex flex-col gap-5"
+  aria-label={`task-title-${props.title}`}
+>
+  <div className="flex-col">
+    <div className="flex justify-between mb-2 xl:mb-5">
+      <h4 
+        className="font-semibold text-lg"
+        id={`task-title-${props.title}`}
+      >
+        {props.title}
+      </h4>
 
-      <div className="flex justify-between">
-        <div className="flex flex-col gap-4 xl:flex-row xl:justify-center xl:items-center">
-          <span className="flex gap-2 items-center">
-            <Image src="/folder.svg" alt="" height={16} width={16} />
-            <p className="text-[#6B7280] text-xs">{props.projectName}</p>
-          </span>
+      <span 
+        className={`${statusColor} rounded-full h-7 px-3 flex items-center justify-center shrink-0 whitespace-nowrap`}
+        role="status"
+        aria-label={`Statut : ${statusLabel}`}
+      >
+        {statusLabel}
+      </span>
+    </div>
 
-          <p className="text-[#9CA3AF] hidden xl:block">|</p>
+    <p className="text-sm text-[#6B7280]">{props.description}</p>
+  </div>
 
-          <span className="flex gap-2 items-center">
-            <Image src="/calendar.svg" alt="" height={16} width={16} />
-            <p className="text-[#6B7280] text-xs">{dueDateFormatted}</p>
-          </span>
+  <div className="flex justify-between">
+    <div className="flex flex-col gap-4 xl:flex-row xl:justify-center xl:items-center">
 
-          <p className="text-[#9CA3AF] hidden xl:block">|</p>
+      <span className="flex gap-2 items-center" aria-label="Projet associé">
+        <Image src="/folder.svg" alt="" height={16} width={16} aria-hidden="true" />
+        <p className="text-[#6B7280] text-xs">{props.projectName}</p>
+      </span>
 
-          <span className="flex gap-2 items-center">
-            <Image src="/comment.svg" alt="" height={16} width={16} />
-            <p className="text-[#6B7280] text-xs">{props.commentsCount}</p>
-          </span>
-        </div>
-      </div>
-      <Link href={`/projects/${props.projectID}`} className="text-white bg-[#1F1F1F] rounded-xl py-3 flex justify-center self-center xl:self-start w-25">
-        Voir
-      </Link>
-    </article>
+      <p className="text-[#9CA3AF] hidden xl:block" aria-hidden="true">|</p>
+
+      <span className="flex gap-2 items-center" aria-label="Date limite">
+        <Image src="/calendar.svg" alt="" height={16} width={16} aria-hidden="true" />
+        <p className="text-[#6B7280] text-xs">{dueDateFormatted}</p>
+      </span>
+
+      <p className="text-[#9CA3AF] hidden xl:block" aria-hidden="true">|</p>
+
+      <span className="flex gap-2 items-center" aria-label="Nombre de commentaires">
+        <Image src="/comment.svg" alt="" height={16} width={16} aria-hidden="true" />
+        <p className="text-[#6B7280] text-xs">{props.commentsCount}</p>
+      </span>
+
+    </div>
+  </div>
+
+  <Link 
+    href={`/projects/${props.projectID}`} 
+    className="text-white bg-[#1F1F1F] rounded-xl py-3 flex justify-center self-center xl:self-start w-25"
+    aria-label={`Voir le projet ${props.projectName}`}
+  >
+    Voir
+  </Link>
+</article>
+
   );
 }

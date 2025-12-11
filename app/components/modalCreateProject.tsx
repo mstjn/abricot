@@ -6,6 +6,7 @@ import { useState } from "react";
 import { User } from "../types";
 import AutocompleteUsers from "./autocompleteUsers";
 import { useEffect } from "react";
+
 export default function ModalCreateProject({
   closeModal,
   onSuccess,
@@ -93,7 +94,7 @@ export default function ModalCreateProject({
           </div>
 
           <div className="flex flex-col gap-1">
-            <label>Contributeurs</label>
+            <label htmlFor="assignes">Contributeurs</label>
             <AutocompleteUsers onSelect={addContributor} />
             {contributors.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">

@@ -54,6 +54,7 @@ export default function AutocompleteUsers({
   return (
     <div ref={containerRef} className="relative w-full">
       <input
+      id="assignes"
         type="text"
         placeholder="Ajouter un contributeur..."
         className="border border-[#E5E7EB] rounded h-12 pl-2 w-full text-xs text-gray-600"

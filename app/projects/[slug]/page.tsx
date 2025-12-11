@@ -125,9 +125,9 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
               <div className="flex gap-5 items-center">
                 <h1 className="font-semibold text-2xl">{projet?.name}</h1>
                 {admin && (
-                  <u className="text-[#D3590B] cursor-pointer" onClick={() => setShowModal(true)}>
+                  <button className="text-[#D3590B] cursor-pointer underline" onClick={() => setShowModal(true)}>
                     Modifier
-                  </u>
+                  </button>
                 )}
 
                 {showModal &&

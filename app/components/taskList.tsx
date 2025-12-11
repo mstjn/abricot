@@ -42,47 +42,66 @@ export default function TaskList({ props }: PropsTL) {
     : "";
 
   return (
-    <article className="lg:px-10 px-5 py-6 border border-[#E5E7EB] rounded-xl">
-      <div className="flex justify-between">
-        <div className="flex flex-col gap-1">
-          <h4 className="font-semibold text-xl">{props.title}</h4>
-         
-        </div>
-        <span
-          className={`${statusColor} rounded-full h-7 flex items-center justify-center text-sm px-3 shrink-0 whitespace-nowrap`}
-        > 
-          {statusLabel}
-        </span>
-      </div>
-       <p className="text-md text-[#6B7280]">{props.description}</p>
-      <div className="flex lg:flex-row flex-col justify-between">
-        <div className="flex gap-4 mt-8 justify-center items-center mb-5 lg:mb-0">
+    <article 
+  className="lg:px-10 px-5 py-6 border border-[#E5E7EB] rounded-xl"
+  aria-label={`task-title-${props.title}`}
+>
+  <div className="flex justify-between">
+    <div className="flex flex-col gap-1">
+      <h4 
+        className="font-semibold text-xl"
+      >
+        {props.title}
+      </h4>
+    </div>
 
-          <span className="flex gap-2 items-center">
-            <Image src="/folder.svg" alt="" height={16} width={16} />
-            <p className="text-[#6B7280] text-xs">{props.projectName}</p>
-          </span>
+    <span
+      className={`${statusColor} rounded-full h-7 flex items-center justify-center text-sm px-3 shrink-0 whitespace-nowrap`}
+      role="status"
+      aria-label={`Statut : ${statusLabel}`}
+    >
+      {statusLabel}
+    </span>
+  </div>
 
-          <p className="text-[#9CA3AF]">|</p>
+  <p className="text-md text-[#6B7280]">
+    {props.description}
+  </p>
 
-          <span className="flex gap-2 items-center">
-            <Image src="/calendar.svg" alt="" height={16} width={16} />
-            <p className="text-[#6B7280] text-xs">{dueDateFormatted}</p>
-          </span>
+  <div className="flex lg:flex-row flex-col justify-between">
 
-          <p className="text-[#9CA3AF]">|</p>
+    <div className="flex gap-4 mt-8 justify-center items-center mb-5 lg:mb-0">
 
-          <span className="flex gap-2 items-center">
-            <Image src="/comment.svg" alt="" height={16} width={16} />
-            <p className="text-[#6B7280] text-xs">{props.commentsCount}</p>
-          </span>
-        </div>
+      <span className="flex gap-2 items-center" aria-label="Projet associé">
+        <Image src="/folder.svg" alt="" height={16} width={16} aria-hidden="true" />
+        <p className="text-[#6B7280] text-xs">{props.projectName}</p>
+      </span>
 
-        <Link href={`/projects/${props.projectID}`} className="text-white bg-[#1F1F1F] rounded-xl self-center py-3 px-12 flex items-center">
-          Voir
-        </Link>
+      <p className="text-[#9CA3AF]" aria-hidden="true">|</p>
 
-      </div>
-    </article>
+      <span className="flex gap-2 items-center" aria-label="Date limite">
+        <Image src="/calendar.svg" alt="" height={16} width={16} aria-hidden="true" />
+        <p className="text-[#6B7280] text-xs">{dueDateFormatted}</p>
+      </span>
+
+      <p className="text-[#9CA3AF]" aria-hidden="true">|</p>
+
+      <span className="flex gap-2 items-center" aria-label="Nombre de commentaires">
+        <Image src="/comment.svg" alt="" height={16} width={16} aria-hidden="true" />
+        <p className="text-[#6B7280] text-xs">{props.commentsCount}</p>
+      </span>
+    </div>
+
+    <Link 
+      href={`/projects/${props.projectID}`} 
+      className="text-white bg-[#1F1F1F] rounded-xl self-center py-3 px-12 flex items-center"
+      aria-label={`Voir le projet ${props.projectName}`}
+    >
+      Voir
+    </Link>
+
+  </div>
+</article>
+
   );
 }
